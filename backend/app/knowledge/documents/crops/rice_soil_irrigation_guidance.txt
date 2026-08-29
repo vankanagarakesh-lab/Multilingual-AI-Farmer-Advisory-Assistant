@@ -1,0 +1,11 @@
+# Rice Paddy Management Reference
+
+Rice Water, Soil & Pest Management Facts:
+- Irrigation & Water: Maintain shallow standing water (2-5 cm) during active tillering and panicle initiation; use Alternate Wetting and Drying (AWD) in water-scarce periods; drain standing water 10-12 days prior to harvest.
+- Soil & Fertilization: Clay loam soils with good organic matter are ideal; apply Nitrogen in three split doses (basal, tillering, panicle); full Phosphorus as basal.
+- Common Pests & IPM: Stem borer (install pheromone traps 4-5/acre, clip seedling tips); Leaf folder (release Trichogramma parasites, avoid excess nitrogen); Brown Plant Hopper (create 30 cm alleyways, drain water temporarily).
+
+వరి సాగు మరియు యాజమాన్యం (సమాచారం):
+- నీటి యాజమాన్యం: దుబ్బు చేసే దశ మరియు పొట్ట దశలో పలుచటి నీటిని నిలబెట్టడం, ఆరుతడుల (AWD) పద్ధతి, కోతకు ముందు నీటిని తీసివేయడం.
+- ప్రధాన పురుగులు & నివారణ: కాండం తొలిచే పురుగుకు లింగాకర్షక బుట్టలు అమర్చడం, ఆకుముడత పురుగుకు ట్రైకోగ్రామా వాడకం, సుడిదోమకు వెలుతురు బాటలు తీయడం.
+

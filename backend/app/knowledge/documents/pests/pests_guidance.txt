@@ -1,0 +1,14 @@
+# Integrated Pest Management (IPM) & Crop Protection Reference
+
+Pest Management Principles & Cultural Reference Facts:
+- Cultural & Agronomic Methods: Deep summer ploughing to expose pupae to sunlight; maintaining clean field bunds; planting trap crops such as African marigold in tomato (for fruit borer and nematodes) or castor in cotton.
+- Mechanical Methods: Installing pheromone traps (4-5 per acre) for borer moths; yellow sticky traps (15-20 per acre) for sucking pests like whiteflies and aphids; blue sticky traps for thrips.
+- Biological Control: Conserving natural beneficial predators (ladybird beetles, spiders); spraying neem oil (1500 ppm @ 5 ml/L) or NSKE 5% at early pest emergence; using bio-agents like Bacillus thuringiensis (Bt) or Beauveria bassiana.
+- Chemical Treatment Disclaimer: Apply selective chemical pesticides only when pest count strictly exceeds Economic Threshold Levels (ETL) and verify exact dosages with local agricultural extension officers.
+
+సమగ్ర సస్యరక్షణ పద్ధతులు (IPM సమాచారం):
+- సాగు పద్ధతులు: వేసవి లోతు దుక్కులు, గట్ల పరిశుభ్రత, ఆకర్షక పంటల సాగు.
+- యాంత్రిక పద్ధతులు: పసుపు/నీలి జిగురు అట్టలు (ఎకరానికి 15-20), లింగాకర్షక బుట్టలు అమర్చడం.
+- జీవ నియంత్రణ: వేప నూనె పిచికారీ, సహజ మిత్ర పురుగుల సంరక్షణ, ట్రైకోడెర్మా/ట్రైకోగ్రామా వాడకం.
+- రసాయన మందులు: ఆర్థిక నష్ట పరిమితి దాటినప్పుడు మాత్రమే వ్యవసాయాధికారి సలహాతో పిచికారీ చేయాలి.
+

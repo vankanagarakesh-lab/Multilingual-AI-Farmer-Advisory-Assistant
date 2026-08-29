@@ -1,0 +1,11 @@
+# Crop Rotation & Sustainable Farm Management Reference
+
+Crop Rotation Principles & Agronomic Benefits:
+- Definition & Concept: Crop rotation is the planned sequence of growing different crop species on the same field over successive seasons rather than planting the same monoculture repeatedly.
+- Key Agronomic Benefits: Restores soil fertility by rotating heavy nitrogen feeders (cereals like rice and maize) with nitrogen-fixing leguminous crops (pulses and groundnut); interrupts specific weed, pest, and disease reproduction cycles; improves soil microbial diversity and structure.
+- Common Sustainable Rotations: Rice followed by pulses (green gram/black gram), Cotton followed by groundnut or chickpea, Maize followed by cowpea or mustard.
+
+పంట మార్పిడి పద్ధతులు మరియు ప్రయోజనాలు (సమాచారం):
+- భావన: ఒకే పొలంలో ఒకే పంటను నిరంతరం వేయకుండా, కాలానికి అనుగుణంగా వేర్వేరు రకాల పంటలను వరుసగా సాగు చేయడాన్ని పంట మార్పిడి అంటారు.
+- ప్రయోజనాలు: నేల సారం పెరగడం, పప్పుధాన్యాల వల్ల నత్రజని స్థిరీకరణ, పురుగులు మరియు తెగుళ్ళ జీవన చక్రం విచ్ఛిన్నం కావడం, కలుపు నియంత్రణ.
+

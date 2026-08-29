@@ -1,0 +1,12 @@
+# Soil Health & Fertility Enhancement Reference
+
+Soil Health & Fertility Management Facts:
+- Organic Matter & Manuring: Incorporating green manure crops (Dhaincha/Sesbania, Sunnhemp) at flowering stage adds 15-20 tonnes of organic matter per hectare; applying well-decomposed FYM or vermicompost improves microbial activity and water holding capacity.
+- Soil Testing & Nutrition: Test soil every 2-3 years to evaluate pH, organic carbon, and NPK levels. Apply micronutrients (Zinc, Boron, Iron) strictly according to deficiency tests.
+- Bio-fertilizers: Treat seeds or soil with Rhizobium, Azotobacter, and Phosphate Solubilizing Bacteria (PSB) to improve nutrient uptake.
+
+నేల సారాన్ని పెంచే పద్ధతులు (సమాచారం):
+- సేంద్రియ ఎరువులు: జనుము, జీలుగ వంటి పచ్చిరొట్ట ఎరువులను నేలలో కలియదున్నడం, పశువుల ఎరువు లేదా వర్మీకంపోస్ట్ వాడటం వల్ల నేల సారవంతమవుతుంది.
+- మట్టి పరీక్ష: 2-3 సంవత్సరాలకు ఒకసారి మట్టి పరీక్ష చేయించి, సిఫార్సుల మేరకు మాత్రమే పోషకాలు అందించాలి.
+- జీవ ఎరువులు: రైజోబియం, పి.ఎస్.బి వంటి జీవ ఎరువుల వాడకం.
+

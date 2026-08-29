@@ -1,0 +1,12 @@
+# Tomato Crop Health & Yellow Leaves Reference
+
+Tomato Yellow Leaves & Disease Management Facts:
+- Common Causes: Overwatering or poorly drained soil causing root stress and nutrient uptake failure; Nitrogen and essential mineral deficiency (lower older leaves yellow first); Sucking pests such as whiteflies and aphids transmitting leaf curl virus; Early and late fungal blights (leaf spots with yellow halos).
+- Effective Management: Check soil moisture before watering and provide adequate drainage to avoid root waterlogging. Prune and dispose of diseased lower leaves. Inspect undersides of leaves for sucking pests. Apply balanced NPK fertilizers in split doses based on soil requirements. Apply neem extract or certified bio-fungicides if fungal infection persists.
+- Prevention & IPM: Maintain 60x45 cm plant spacing for sunlight and airflow. Practice crop rotation with non-solanaceous crops. Install 15-20 yellow sticky traps per acre for whitefly monitoring.
+
+టమాటా ఆకులు పసుపు రంగు మరియు తెగుళ్ళ నివారణ సమాచారం:
+- ప్రధాన కారణాలు: మురుగునీరు నిల్వ ఉండటం వల్ల వేర్ల సమస్య, నత్రజని పోషకాల లోపం, తెల్లదోమ లేదా పేనుబంక పురుగులు, ఆకుమచ్చ తెగులు.
+- నిర్వహణ: మొదళ్ళ వద్ద నీరు నిల్వ ఉండకుండా చూడటం, తెగులు సోకిన ఆకులను తీసివేయడం, సమతుల్య ఎరువులు వేయడం, పసుపు జిగురు అట్టలు అమర్చడం.
+- నివారణ: సరైన డ్రైనేజ్, పంట మార్పిడి, మొక్కల మధ్య తగినంత దూరం పాటించడం.
+

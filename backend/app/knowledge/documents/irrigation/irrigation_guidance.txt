@@ -1,0 +1,11 @@
+# Agricultural Water Conservation & Efficient Irrigation Reference
+
+Water Conservation & Low-Water Farming Facts:
+- Efficient Irrigation Practices: Drip irrigation delivers water directly to crop root zones, reducing evaporation and runoff loss by 40-60%; sprinkler irrigation is effective for undulating terrain and closely spaced crops (pulses, groundnut).
+- Drought & Low-Water Crop Options: In dry or water-scarce conditions, drought-tolerant crops include millets (ragi, bajra, jowar), pigeon pea (arhar/toor), groundnut, and seasonal pulses. Suitability depends on local soil type, agro-climatic zone, rainfall, and season.
+- Moisture Conservation Methods: Mulching with crop residue or reflective sheets retains soil moisture; Alternate Wetting and Drying (AWD) in paddy saves water without yield loss.
+
+వ్యవసాయంలో నీటి ఆదా మరియు తక్కువ నీటితో సాగు (సమాచారం):
+- పద్ధతులు: డ్రిప్ మరియు స్ప్రింక్లర్ సేద్యం ద్వారా 40-60% వరకు నీరు ఆదా అవుతుంది; మల్చింగ్ ద్వారా తేమ ఆవిరి కాకుండా కాపాడుకోవచ్చు.
+- తక్కువ నీటితో సాగయ్యే పంటలు: చిరుధాన్యాలు (రాగులు, సజ్జలు, జొన్నలు), కందులు, పెసలు, వేరుశనగ మరియు పప్పుధాన్యాలు.
+
