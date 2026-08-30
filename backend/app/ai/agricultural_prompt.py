@@ -50,26 +50,29 @@ def build_system_prompt(
     # 2. Base Core Directives for Krishi AI
     prompt_lines = [
         "You are KRISHI AI, a personalized, farmer-friendly agricultural advisor.",
-        "Always use the farmer's profile, current location, current weather, soil type, water availability, land area, crop details and conversation context before giving recommendations.",
-        "Never give a generic answer when profile data is available.",
-        "CRITICAL RULE: NEVER say 'I don't have access to your location or soil information' because all verified farmer details and live meteorological data are already provided below.",
-        "If specific details are missing, use the available profile and weather information and politely ask only for the missing parameters.",
-        "Never stop midway through a sentence or farming step. Ensure all explanations and lists are fully completed."
+        "CRITICAL RULES:",
+        "1. Never output raw RAG chunks, document titles, or internal knowledge-base citations directly in the message text. Use knowledge strictly to formulate your own clear, natural advice.",
+        "2. Always reason using the farmer's actual profile (location, soil, land area, current crop, growth stage) and live weather conditions.",
+        "3. Do not assume or default to Rice / Paddy or Black Soil unless the farmer specifically asks about it or it is set in their profile.",
+        "4. If essential parameters (like crop name for fertilizer advice) are not provided, politely ask the farmer for the missing detail instead of inventing facts.",
+        "5. For crop suggestion requests, format your response cleanly as:",
+        "   'Based on your location, soil, current weather and water availability, these crops may be suitable for you:\n   1. [Crop name] – [Reason]\n   2. [Crop name] – [Reason]\n   3. [Crop name] – [Reason]\n   Best recommendation: [Crop name] because [personalized reason].'",
+        "6. Keep answers concise, actionable, and free from repetitive meta-explanations."
     ]
 
     # 3. Verified Farmer Profile Context Block
     if farmer_context:
         f_name = farmer_context.get("name") or "Farmer"
         f_loc = farmer_context.get("location") or "Andhra Pradesh, India"
-        f_soil = farmer_context.get("soil_type") or "Black Soil (Clay Loam)"
-        f_area = farmer_context.get("farm_size") or "3 Acres"
+        f_soil = farmer_context.get("soil_type") or "Not specified yet"
+        f_area = farmer_context.get("farm_size") or "Not specified yet"
         f_crop = farmer_context.get("primary_crop") or "Not specified yet"
-        f_stage = farmer_context.get("current_crop_stage") or "Vegetative / Sowing"
-        f_water = farmer_context.get("water_availability") or farmer_context.get("water_source") or "Moderate / Canal & Borewell"
+        f_stage = farmer_context.get("current_crop_stage") or "Not specified yet"
+        f_water = farmer_context.get("water_availability") or "Moderate"
         f_lang = farmer_context.get("preferred_language") or ("Telugu" if lang == "te" else "English")
 
         prompt_lines.append("")
-        prompt_lines.append("FARMER PROFILE & LOCAL FARM CONDITIONS:")
+        prompt_lines.append("FARMER PROFILE CONTEXT:")
         prompt_lines.append(f"- Farmer Name: {f_name}")
         prompt_lines.append(f"- Farm Location: {f_loc}")
         prompt_lines.append(f"- Soil Type: {f_soil}")
@@ -84,20 +87,13 @@ def build_system_prompt(
         w_temp = weather_context.get("temperature", 30)
         w_cond = weather_context.get("condition", "Partly Cloudy")
         w_hum = weather_context.get("humidity", 65)
-        w_wind = weather_context.get("wind_speed", 10)
         w_rain_chance = weather_context.get("rain_chance", 15)
         w_next_rain = weather_context.get("next_rain", "Clear weather in upcoming 48 hours")
-        w_loc = weather_context.get("location", "Farm Coordinates")
+        w_loc = weather_context.get("location", "Farm Location")
 
         prompt_lines.append("")
-        prompt_lines.append("LIVE METEOROLOGICAL STATION WEATHER & FORECAST:")
-        prompt_lines.append(f"- Location: {w_loc}")
-        prompt_lines.append(f"- Current Condition: {w_cond}")
-        prompt_lines.append(f"- Temperature: {w_temp}°C")
-        prompt_lines.append(f"- Relative Humidity: {w_hum}%")
-        prompt_lines.append(f"- Wind Speed: {w_wind} km/h")
-        prompt_lines.append(f"- Rain Chance: {w_rain_chance}%")
-        prompt_lines.append(f"- Next Rain Forecast: {w_next_rain}")
+        prompt_lines.append("LIVE WEATHER CONTEXT (Use for agricultural reasoning):")
+        prompt_lines.append(f"- Location: {w_loc} | Condition: {w_cond} | Temperature: {w_temp}°C | Humidity: {w_hum}% | Rain Forecast: {w_next_rain} ({w_rain_chance}%)")
 
     # 5. Intent Specific Agricultural Guidance
     if intent == "CROP_RECOMMENDATION":

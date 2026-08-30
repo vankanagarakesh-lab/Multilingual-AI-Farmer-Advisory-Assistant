@@ -53,13 +53,13 @@ async def process_chat_message(
     profile = get_farmer_profile(db, user_id)
     farmer_context = {
         "name": profile.name or "Farmer",
-        "location": profile.location or "Andhra Pradesh, India",
-        "farm_size": profile.farm_size or "3 Acres",
-        "primary_crop": profile.primary_crop or "Paddy / Rice",
-        "soil_type": profile.soil_type or "Black Soil (Clay Loam)",
-        "current_crop_stage": profile.current_crop_stage or "Sowing / Vegetative",
+        "location": profile.location or (weather_data.get("locationName") if weather_data else None) or "Andhra Pradesh, India",
+        "farm_size": profile.farm_size or "2 Acres",
+        "primary_crop": profile.primary_crop or None,
+        "soil_type": profile.soil_type or None,
+        "current_crop_stage": profile.current_crop_stage or None,
         "preferred_language": profile.preferred_language or "English",
-        "water_availability": "Moderate (Canal & Borewell)"
+        "water_availability": "Moderate"
     }
 
     # 2. Fetch live verified meteorological data
@@ -130,7 +130,11 @@ async def process_chat_message(
             text=message_content,
             farmer_crop=profile.primary_crop
         )
-        target_crop = classification.get("crop") or (profile.primary_crop if classification.get("intent") != "GREETING" else None)
+        query_intent = classification.get("intent", "GENERAL_FARMING")
+        if query_intent in ["CROP_RECOMMENDATION", "GREETING"]:
+            target_crop = classification.get("crop")
+        else:
+            target_crop = classification.get("crop") or profile.primary_crop
         target_category = classification.get("category")
         max_tokens = classification.get("max_tokens") or settings.MAX_NEW_TOKENS
 
@@ -282,13 +286,13 @@ async def process_chat_message_stream(
     profile = get_farmer_profile(db, user_id)
     farmer_context = {
         "name": profile.name or "Farmer",
-        "location": profile.location or "Andhra Pradesh, India",
-        "farm_size": profile.farm_size or "3 Acres",
-        "primary_crop": profile.primary_crop or "Paddy / Rice",
-        "soil_type": profile.soil_type or "Black Soil (Clay Loam)",
-        "current_crop_stage": profile.current_crop_stage or "Sowing / Vegetative",
+        "location": profile.location or (weather_data.get("locationName") if weather_data else None) or "Andhra Pradesh, India",
+        "farm_size": profile.farm_size or "2 Acres",
+        "primary_crop": profile.primary_crop or None,
+        "soil_type": profile.soil_type or None,
+        "current_crop_stage": profile.current_crop_stage or None,
         "preferred_language": profile.preferred_language or "English",
-        "water_availability": "Moderate (Canal & Borewell)"
+        "water_availability": "Moderate"
     }
 
     # 2. Fetch live meteorological weather data
@@ -377,7 +381,11 @@ async def process_chat_message_stream(
             text=message_content,
             farmer_crop=profile.primary_crop
         )
-        target_crop = classification.get("crop") or (profile.primary_crop if classification.get("intent") != "GREETING" else None)
+        query_intent = classification.get("intent", "GENERAL_FARMING")
+        if query_intent in ["CROP_RECOMMENDATION", "GREETING"]:
+            target_crop = classification.get("crop")
+        else:
+            target_crop = classification.get("crop") or profile.primary_crop
         target_category = classification.get("category")
         max_tokens = classification.get("max_tokens") or settings.MAX_NEW_TOKENS
 

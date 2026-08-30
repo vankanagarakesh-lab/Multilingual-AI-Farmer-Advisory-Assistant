@@ -137,13 +137,15 @@ CROP_RECOMMENDATION_KEYWORDS = [
     "recommend crop", "crop recommendation", "what can i grow", "which crop should i grow",
     "what to sow", "best crop", "crop for my soil", "crop for my land", "suitable crop",
     "crop for my farm", "crops to plant", "crop selection", "recommend a crop",
-    "what crops", "suggest for me", "crop can you suggest",
+    "what crops", "suggest for me", "crop can you suggest", "give me some crop names",
+    "crop names for me", "crop names", "suggest some crops", "list crops", "crops for me",
     # Telugu
     "ఏ పంట", "ఏమి పంట", "ఏ పంట వేయాలి", "ఏ పంట సాగు", "పంట సూచన", "ఏ పంట మంచిది",
     "నా నేలకు ఏ పంట", "నా పొలానికి ఏ పంట", "ఏ పంట పండించాలి", "పంట ఎంపిక", "ఏ పంట లాభం",
+    "పంట పేర్లు", "పంటల పేర్లు", "నాకు ఏ పంట",
     # Hindi
     "कौन सी फसल", "कौन सी खेती", "फसल सुझाव", "क्या बोएं", "मेरी जमीन के लिए फसल",
-    "कौन सी फसल लगाएं", "उपयुक्त फसल"
+    "कौन सी फसल लगाएं", "उपयुक्त फसल", "फसलों के नाम", "फसल के नाम"
 ]
 
 # Greeting keywords
@@ -183,20 +185,21 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
             "needs_followup": False
         }
 
-    detected_crop = extract_crop(text_clean) or (farmer_crop.lower() if farmer_crop else None)
+    has_crop_rec = any(k in text_lower for k in CROP_RECOMMENDATION_KEYWORDS)
+    explicit_crop = extract_crop(text_clean)
+    detected_crop = explicit_crop or (None if has_crop_rec else (farmer_crop.lower() if farmer_crop else None))
 
     has_symptom = any(k in text_lower for k in SYMPTOM_KEYWORDS)
     has_pest = any(k in text_lower for k in PEST_KEYWORDS)
     has_fertilizer = any(k in text_lower for k in FERTILIZER_SOIL_KEYWORDS)
     has_irrigation = any(k in text_lower for k in IRRIGATION_KEYWORDS)
-    has_crop_rec = any(k in text_lower for k in CROP_RECOMMENDATION_KEYWORDS)
     is_definition = any(p in text_lower for p in DEFINITION_PREFIXES)
 
     # 1. Crop Recommendation Inquiry
     if has_crop_rec:
         return {
             "intent": "CROP_RECOMMENDATION",
-            "crop": detected_crop,
+            "crop": explicit_crop,
             "category": "crop_selection",
             "max_tokens": None,
             "needs_followup": False
