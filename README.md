@@ -4,7 +4,7 @@
 
 ![Krishi Vision Banner](screenshots/06_krishi_vision_simulator.png)
 
-### **Empowering Smallholder Farmers with Predictive Agronomic Simulations, Deep Learning Plant Pathology, and Multilingual Indian Language Intelligence**
+### **Empowering Smallholder Farmers with Predictive Agronomic Simulations, AI Plant Disease Detection with Image or Camera, and Multilingual Indian Language Intelligence**
 
 ---
 
@@ -15,7 +15,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-Modern_UI-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 Vision & Pathology Engine](#-deep-learning-plant-disease-diagnosis) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ System Architecture](#️-system-architecture--data-pipelines) • [📐 Agronomic & Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
+[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 AI Plant Disease Detection](#-ai-plant-disease-detection-with-image-or-camera) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ System Architecture](#️-system-architecture--data-pipelines) • [📐 Agronomic & Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
 
 </div>
 
@@ -79,8 +79,8 @@ Smallholder farmers in India confront high volatility due to climate unpredictab
 
 ---
 
-### 4. 🔬 Deep Learning Leaf Pathology & Disease Diagnostics
-*MobileNetV2 classifier detecting leaf blight with confidence score (96.8%), causes, biological/organic treatment, and chemical fungicide protocols.*
+### 4. 🔬 AI Plant Disease Detection with Image or Camera
+*Instant leaf diagnosis via live device camera snap or gallery photo upload. MobileNetV2 neural vision model detecting plant leaf disease with confidence score (96.8%), causes, biological/organic remedies, and chemical fungicide protocols.*
 
 ![Plant Disease Detection](screenshots/03_plant_disease_detection.png)
 
@@ -171,19 +171,38 @@ $$\text{Score}_{\text{AI}} = w_1 \cdot \widehat{\Pi}_{\text{profit}} + w_2 \cdot
 
 ---
 
-## 🔬 Deep Learning Plant Disease Diagnosis
+## 🔬 AI Plant Disease Detection with Image or Camera
 
 ```
-  Input Leaf Image (JPG/PNG) ──► Image Normalization (224x224) ──► MobileNetV2 Backbone (PyTorch)
-                                                                           │
-  Structured Advisory Output ◄── Agronomic Knowledge Base ◄── Softmax Classifier (38 Disease Classes)
-  (Organic / Chemical Cures)     (Confidence > 85% Filter)
+  ┌───────────────────────────────┐
+  │  📸 Live Camera Capture /     │
+  │  🖼️ Leaf Image Upload (JPG/PNG)│
+  └───────────────┬───────────────┘
+                  │
+                  ▼
+   [ Preprocessing & Resize (224x224) ]
+                  │
+                  ▼
+   [ MobileNetV2 Neural Vision Model ]
+                  │
+                  ▼
+   [ Softmax Classifier (38 Disease Classes) ]
+                  │
+                  ▼
+   [ Agronomic Advisory & Remedies ]
+   • Plant & Disease Name
+   • Confidence Score (%)
+   • Probable Causes
+   • Organic & Biological Treatments
+   • Chemical Fungicides / Pesticides
+   • Preventative Agronomic Care
 ```
 
-- **Architecture**: `MobileNetV2` with inverted residual blocks and linear bottlenecks, optimized for edge inference and mobile deployment.
-- **Dataset**: Trained on **PlantVillage** dataset containing 54,305 curated leaf images across 38 crop-disease classes.
+- **Live Camera & Image Ingestion**: Farmers can either take an instant real-time photo of an infected leaf using their smartphone/laptop camera or upload high-resolution photos from their file gallery.
+- **Deep Learning Neural Architecture**: PyTorch `MobileNetV2` featuring inverted residual blocks with depthwise separable convolutions for ultra-fast, lightweight mobile and edge inference (< 120ms).
+- **Dataset & Classes**: Pretrained on **54,305 curated leaf images** across **38 plant disease classes** from the PlantVillage agricultural corpus.
 - **Supported Crops**: Tomato, Potato, Corn (Maize), Bell Pepper / Chilli, Apple, Grape, Citrus, Strawberry, Peach, Cherry, Soybean, Blueberry, Squash.
-- **Validation Guardrails**: Integrated sharpness check (Laplacian variance $\sigma^2 < 100$) and color histogram validation to reject non-plant or corrupt images.
+- **Quality & Rejection Guardrails**: Automatic OpenCV/PIL validation detecting blurry photos ($\text{Laplacian variance } \sigma^2 < 100$), bad lighting, corrupt files, or non-plant subjects with prompt guidance to retake clear leaf photos.
 
 ---
 
