@@ -8,14 +8,17 @@
 
 ---
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React_18-TypeScript-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-Vision_MobileNetV2-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Vite](https://img.shields.io/badge/Vite-Build_Tool-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![React 18](https://img.shields.io/badge/React_18-Frontend-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend_API-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep_Learning-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-Modern_UI-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![SQLite / SQL](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 AI Plant Disease Detection](#-ai-plant-disease-detection-with-image-or-camera) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ System Architecture](#️-system-architecture--data-pipelines) • [📐 Agronomic & Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
+[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 AI Plant Disease Detection](#-ai-plant-disease-detection-with-image-or-camera) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ Architecture & Pipelines](#️-system-architecture--data-pipelines) • [💻 Technical Languages & Stack](#-technical-programming-languages--technology-stack) • [📐 Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
 
 </div>
 
@@ -248,6 +251,41 @@ $$\text{Score}_{\text{AI}} = w_1 \cdot \widehat{\Pi}_{\text{profit}} + w_2 \cdot
 │ Engine        │   │ Classifier    │ │               │   │ Persistence   │   │ & Geocoding   │
 └───────────────┘   └───────────────┘ └───────────────┘   └───────────────┘   └───────────────┘
 ```
+
+---
+
+## 💻 Technical Programming Languages & Technology Stack
+
+KRISHI AI is engineered using a robust polyglot architecture combining high-performance typed programming languages, deep learning frameworks, and localized Indian natural language processing engines:
+
+### 🛠️ Programming & Technical Languages
+| Language | Version / Standard | Application Area | Key Capabilities & Role in KRISHI AI |
+| :--- | :--- | :--- | :--- |
+| **Python** | `3.10+` | Backend & Machine Learning | FastAPI gateway, PyTorch MobileNetV2 leaf pathology classification, agronomic math models, RAG vector embeddings, and speech processing. |
+| **TypeScript** | `5.x` | Frontend Application | 100% type-safe React UI, predictive simulation telemetry interfaces, state synchronization, and strict API schemas. |
+| **JavaScript** | `ES2022+ / Node.js` | Frontend Runtime & Tooling | Vite build pipelines, asynchronous client networking, and Web Audio API streaming. |
+| **HTML5** | Modern Semantic Standard | Layout & Device APIs | Semantic document structure, device camera stream capture (`navigator.mediaDevices`), and Web Audio API contexts. |
+| **CSS3** | Modern Specification | Styling & Animations | Responsive dark-mode aesthetics, custom glassmorphism design tokens, micro-animations, and fluid transitions. |
+| **SQL** | SQLite / SQLAlchemy Dialect | Database & Persistence | Relational database schema definitions, conversation message indexing, and farmer profile records. |
+| **Shell / Bash / PowerShell** | Unix / POSIX / Windows | Tooling & Scripts | Automated environment orchestration, virtualenv lifecycle, and npm/pip deployment workflows. |
+
+### 🗣️ Supported Spoken & Natural Indian Languages
+| Natural Language | Script | UI Localization | Voice STT | Neural TTS | Agronomic Advisory |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Telugu (తెలుగు)** | Telugu Script (`te-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+| **Hindi (हिंदी)** | Devanagari (`hi-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+| **Kannada (ಕನ್ನಡ)** | Kannada Script (`kn-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+| **Tamil (தமிழ்)** | Tamil Script (`ta-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+| **Marathi (मराठी)** | Devanagari (`mr-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+| **English** | Latin Script (`en-IN`) | ✅ Full | ✅ Active | ✅ Active | ✅ Full Native |
+
+### 📦 Core Frameworks, AI Libraries & Tooling
+- **Deep Learning & Computer Vision**: PyTorch, TorchVision (`MobileNetV2`), OpenCV, Pillow (PIL), NumPy, SciPy
+- **AI & NLP Orchestration**: HuggingFace Transformers, Ollama, Sentence-Transformers, Vector RAG Retrieval
+- **Backend Framework & Server**: FastAPI (Async ASGI), Uvicorn, Pydantic v2, SQLAlchemy ORM, SQLite
+- **Frontend Stack**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, Axios, Web Speech API
+- **Audio & Speech Processing**: Web Audio API, MediaRecorder API, gTTS (Google Text-to-Speech), Whisper STT
+- **Microclimate & Geocoding**: Open-Meteo Weather API, BigDataCloud Reverse Geocoding, OpenStreetMap Nominatim
 
 ---
 
