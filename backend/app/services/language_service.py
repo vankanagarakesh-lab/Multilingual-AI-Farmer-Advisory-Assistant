@@ -3,7 +3,7 @@ import json
 import logging
 import urllib.parse
 import urllib.request
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple, List
 
 logger = logging.getLogger(__name__)
 
@@ -375,6 +375,10 @@ def localize_ai_response(response_text: str, target_lang: str) -> str:
     return response_text.strip()
 
 
+# Global In-Memory Translation Cache: (text, target_lang) -> translated_text
+_TRANSLATION_MEM_CACHE: Dict[Tuple[str, str], str] = {}
+
+
 def get_language_display_name(lang_code: str) -> str:
     """Returns friendly UI label for a language code."""
     mapping = {
@@ -390,4 +394,34 @@ def get_language_display_name(lang_code: str) -> str:
         "en": "English"
     }
     return mapping.get(normalize_language_code(lang_code), "English")
+
+
+async def translate_batch_online(texts: List[str], target_lang: str) -> List[str]:
+    """
+    Translates a list of texts asynchronously into target language in parallel.
+    Uses in-memory caching to eliminate redundant translations.
+    """
+    target_code = normalize_language_code(target_lang)
+    if not texts:
+        return []
+
+    if target_code == "en":
+        return [localize_ai_response(t, "en") for t in texts]
+
+    import asyncio
+
+    async def _translate_single(text: str) -> str:
+        if not text or not text.strip():
+            return text
+        cache_key = (text.strip(), target_code)
+        if cache_key in _TRANSLATION_MEM_CACHE:
+            return _TRANSLATION_MEM_CACHE[cache_key]
+
+        loop = asyncio.get_event_loop()
+        translated = await loop.run_in_executor(None, localize_ai_response, text, target_code)
+        _TRANSLATION_MEM_CACHE[cache_key] = translated
+        return translated
+
+    tasks = [_translate_single(t) for t in texts]
+    return await asyncio.gather(*tasks)
 

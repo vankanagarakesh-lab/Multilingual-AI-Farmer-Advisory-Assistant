@@ -15,7 +15,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useLanguage, normalizeLanguageCode, SupportedLanguage } from '../context/LanguageContext';
+import { useLanguage, normalizeLanguageCode, SupportedLanguage, SUPPORTED_LANGUAGES } from '../context/LanguageContext';
 import { farmerService } from '../services/farmerService';
 import { LanguageSwitcher } from '../components/layout/LanguageSwitcher';
 
@@ -55,6 +55,14 @@ export const ProfilePage: React.FC = () => {
       setName(user.name || '');
     }
   }, [farmerProfile, user]);
+
+  // Keep dropdown synced if language is changed from top-right switcher
+  useEffect(() => {
+    const matchingOption = SUPPORTED_LANGUAGES.find((l) => l.code === currentLanguage);
+    if (matchingOption) {
+      setPreferredLanguage(matchingOption.name);
+    }
+  }, [currentLanguage]);
 
   const handleLanguageChange = (langName: string) => {
     setPreferredLanguage(langName);

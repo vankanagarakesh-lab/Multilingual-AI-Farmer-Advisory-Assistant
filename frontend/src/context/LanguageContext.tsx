@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
+import { translationService } from '../services/translationService';
 
 export type SupportedLanguage = 'en' | 'te' | 'hi' | 'kn' | 'ta' | 'mr';
 
@@ -578,8 +579,7 @@ export const LOCALIZED_SUGGESTIONS: Record<SupportedLanguage, Array<{ title: str
     { title: '🌾 कीड नियंत्रण', prompt: 'मक्यावरील लष्करी अळी रोखण्यासाठी कोणते जैविक कीटकनाशक वापरावे?', category: 'pest' },
   ],
 };
-
-interface LanguageContextType {
+export interface LanguageContextType {
   currentLanguage: SupportedLanguage;
   currentLanguageOption: LanguageOption;
   supportedLanguages: LanguageOption[];
@@ -588,6 +588,9 @@ interface LanguageContextType {
   t: (key: string, defaultText?: string) => string;
   getSuggestions: () => Array<{ title: string; prompt: string; category: string }>;
   isManualSelection: boolean;
+  translateText: (text: string, targetLang?: SupportedLanguage) => Promise<string>;
+  translateBatch: (texts: string[], targetLang?: SupportedLanguage) => Promise<string[]>;
+  translateWeather: (weatherString: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -649,6 +652,50 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     return LOCALIZED_SUGGESTIONS[currentLanguage] || LOCALIZED_SUGGESTIONS.en;
   };
 
+  const translateText = async (text: string, targetLang?: SupportedLanguage): Promise<string> => {
+    const lang = targetLang || currentLanguage;
+    return await translationService.translateText(text, lang);
+  };
+
+  const translateBatch = async (texts: string[], targetLang?: SupportedLanguage): Promise<string[]> => {
+    const lang = targetLang || currentLanguage;
+    return await translationService.translateBatch(texts, lang);
+  };
+
+  const translateWeather = (weatherString: string): string => {
+    if (!weatherString) return '';
+    const quick = translationService.getQuickTranslation(weatherString, currentLanguage);
+    if (quick) return quick;
+
+    // Handle compound phrases like "Rain in 3 hours"
+    if (currentLanguage === 'te') {
+      let res = weatherString;
+      res = res.replace(/Rain:\s*In\s*(\d+)\s*hours/i, '$1 గంటల్లో వర్షం');
+      res = res.replace(/Rain in\s*(\d+)\s*hours/i, '$1 గంటల్లో వర్షం');
+      res = res.replace(/Rain likely in\s*(\d+)\s*hours/i, '$1 గంటల్లో వర్షం');
+      res = res.replace(/Rain expected tomorrow/i, 'రేపు వర్షం');
+      res = res.replace(/Clear weather in upcoming 48 hours/i, '48 గంటల్లో నిర్మలమైన వాతావరణం');
+      res = res.replace(/Partly Cloudy/i, 'పాక్షికంగా మేఘావృతం');
+      res = res.replace(/Clear Sky/i, 'నిర్మలమైన ఆకాశం');
+      res = res.replace(/Mainly Clear/i, 'స్పష్టమైన ఆకాశం');
+      res = res.replace(/Overcast/i, 'దట్టమైన మేఘాలు');
+      res = res.replace(/Heavy Rainfall/i, 'భారీ వర్షం');
+      return res;
+    } else if (currentLanguage === 'hi') {
+      let res = weatherString;
+      res = res.replace(/Rain:\s*In\s*(\d+)\s*hours/i, '$1 घंटों में बारिश');
+      res = res.replace(/Rain in\s*(\d+)\s*hours/i, '$1 घंटों में बारिश');
+      res = res.replace(/Rain likely in\s*(\d+)\s*hours/i, '$1 घंटों में बारिश');
+      res = res.replace(/Rain expected tomorrow/i, 'कल बारिश');
+      res = res.replace(/Clear weather in upcoming 48 hours/i, 'अगले 48 घंटे साफ मौसम');
+      res = res.replace(/Partly Cloudy/i, 'आंशिक बादल');
+      res = res.replace(/Clear Sky/i, 'साफ आसमान');
+      res = res.replace(/Heavy Rainfall/i, 'भारी बारिश');
+      return res;
+    }
+    return weatherString;
+  };
+
   const currentLanguageOption =
     SUPPORTED_LANGUAGES.find((l) => l.code === currentLanguage) || SUPPORTED_LANGUAGES[0];
 
@@ -663,6 +710,9 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         t,
         getSuggestions,
         isManualSelection,
+        translateText,
+        translateBatch,
+        translateWeather,
       }}
     >
       {children}

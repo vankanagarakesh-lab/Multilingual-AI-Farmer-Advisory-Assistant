@@ -136,8 +136,11 @@ const reverseGeocode = async (lat: number, lon: number): Promise<string | null> 
   return null;
 };
 
+import { useLanguage } from '../../context/LanguageContext';
+
 export const WeatherWidget: React.FC = () => {
   const { farmerProfile } = useAuth();
+  const { t, translateWeather } = useLanguage();
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -348,7 +351,7 @@ export const WeatherWidget: React.FC = () => {
                 : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
             }`}>
               <CloudRain className="w-3 h-3 text-sky-400 shrink-0" />
-              <span>Rain: {weather.nextRain.countdownText}</span>
+              <span>{translateWeather(weather.nextRain.countdownText)}</span>
             </div>
           )}
 
@@ -420,7 +423,7 @@ export const WeatherWidget: React.FC = () => {
                 <ConditionIcon className={`w-9 h-9 ${conditionColor}`} />
                 <div>
                   <div className="text-2xl font-black text-white">{weather.temperature}°C</div>
-                  <div className="text-xs text-slate-400">{weather.conditionText}</div>
+                  <div className="text-xs text-slate-400">{translateWeather(weather.conditionText)}</div>
                 </div>
               </div>
               <div className="text-right space-y-0.5 text-xs text-slate-300">
@@ -443,7 +446,7 @@ export const WeatherWidget: React.FC = () => {
                   Next Rainfall Forecast
                 </span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                  {weather.nextRain?.countdownText}
+                  {weather.nextRain ? translateWeather(weather.nextRain.countdownText) : ''}
                 </span>
               </div>
 

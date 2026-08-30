@@ -10,7 +10,8 @@ from app.database.base import Base
 import app.models  # Ensures all SQLAlchemy models are registered
 from app.api import (
     auth_router, farmers_router, conversations_router,
-    chat_router, voice_router, knowledge_router, simulator_router
+    chat_router, voice_router, knowledge_router, simulator_router,
+    translate_router
 )
 from app.knowledge.retrieval.knowledge_service import initialize_knowledge_base
 
@@ -131,6 +132,7 @@ app.include_router(chat_router)
 app.include_router(voice_router)
 app.include_router(knowledge_router)
 app.include_router(simulator_router)
+app.include_router(translate_router)
 
 
 @app.get("/api/health", tags=["Health"])

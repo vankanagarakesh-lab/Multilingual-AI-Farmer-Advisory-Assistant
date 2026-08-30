@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Sprout, 
@@ -39,11 +39,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { user, farmerProfile, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, currentLanguage, translateBatch } = useLanguage();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [translatedTitles, setTranslatedTitles] = useState<Record<number, string>>({});
 
   const isProfileActive = location.pathname === '/profile';
+
+  // Translate conversation titles whenever currentLanguage or conversations list changes
+  useEffect(() => {
+    if (conversations.length === 0) return;
+    if (currentLanguage === 'en') {
+      setTranslatedTitles({});
+      return;
+    }
+
+    let isMounted = true;
+    const titles = conversations.map((c) => c.title);
+    translateBatch(titles, currentLanguage).then((res) => {
+      if (!isMounted) return;
+      const map: Record<number, string> = {};
+      conversations.forEach((c, i) => {
+        map[c.id] = res[i] || c.title;
+      });
+      setTranslatedTitles(map);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [conversations, currentLanguage]);
 
   const confirmDelete = async (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
@@ -168,7 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className="flex-1 text-left px-3 py-2.5 text-sm flex items-center space-x-3 min-w-0"
                   >
                     <MessageSquare className={`w-4 h-4 shrink-0 ${isActive ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-400'}`} />
-                    <span className="truncate flex-1">{conv.title}</span>
+                    <span className="truncate flex-1">{translatedTitles[conv.id] || conv.title}</span>
                   </button>
 
                   {/* Delete Button */}

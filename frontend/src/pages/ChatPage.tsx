@@ -23,7 +23,7 @@ export const ChatPage: React.FC = () => {
   const location = useLocation();
   const { onOpenMobileSidebar, refreshConversations } = useOutletContext<OutletContextType>();
   const { farmerProfile, user } = useAuth();
-  const { currentLanguage, t } = useLanguage();
+  const { currentLanguage, t, translateBatch, translateText } = useLanguage();
 
   const [conversation, setConversation] = useState<ConversationDetail | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -58,6 +58,42 @@ export const ChatPage: React.FC = () => {
       setErrorMessage(null);
     }
   }, [conversationId]);
+
+  // Translate all currently displayed messages immediately when the language is switched
+  useEffect(() => {
+    if (messages.length === 0) return;
+
+    let isMounted = true;
+    const translateExistingMessages = async () => {
+      try {
+        const textList = messages.map((m) => m.content);
+        const translatedList = await translateBatch(textList, currentLanguage);
+        if (!isMounted) return;
+
+        setMessages((prevMessages) =>
+          prevMessages.map((msg, idx) => ({
+            ...msg,
+            content: translatedList[idx] || msg.content,
+            language: currentLanguage
+          }))
+        );
+
+        if (conversation?.title) {
+          const translatedTitle = await translateText(conversation.title, currentLanguage);
+          if (isMounted) {
+            setConversation((prev) => (prev ? { ...prev, title: translatedTitle } : null));
+          }
+        }
+      } catch (err) {
+        console.warn('On-screen message translation note:', err);
+      }
+    };
+
+    translateExistingMessages();
+    return () => {
+      isMounted = false;
+    };
+  }, [currentLanguage]);
 
   useEffect(() => {
     scrollToBottom();
