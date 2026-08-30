@@ -20,6 +20,7 @@ from app.ai.agricultural_prompt import build_system_prompt
 from app.ai.query_classifier import classify_query
 from app.knowledge.retrieval.knowledge_service import retrieve_agricultural_context
 from app.services.disease_service import get_disease_detector
+from app.services.agronomy_synthesizer import generate_expert_agronomic_advice, stream_fast_tokens
 
 logger = logging.getLogger(__name__)
 
@@ -185,19 +186,31 @@ async def process_chat_message(
                     getattr(settings, "USE_LORA", True), settings.HF_BASE_MODEL, settings.KRISHI_ADAPTER_PATH)
         logger.info("[DEBUG LOG] Retrieved RAG Knowledge (%d chars):\n%s",
                     len(rag_context) if rag_context else 0, rag_context if rag_context else "(None)")
-        logger.info("[DEBUG LOG] Final Prompt Sent to Model:\n%s", system_prompt)
-        logger.info("="*80)
-
-        # 12. Call AI Provider
-        ai_provider = get_ai_provider()
-        raw_ai_content = await ai_provider.generate_response(
-            messages=formatted_history,
-            system_prompt=system_prompt,
-            max_new_tokens=max_tokens
+        # 12. Try ultra-fast expert agronomic synthesis
+        agronomic_advice = generate_expert_agronomic_advice(
+            query=message_content,
+            target_crop=target_crop,
+            intent=classification.get("intent", "GENERAL_FARMING"),
+            farmer_context=farmer_context,
+            weather_context=weather_context,
+            rag_context=rag_context,
+            target_language=target_response_lang
         )
 
-        # 13. Clean and validate response
-        final_ai_content = localize_ai_response(raw_ai_content, target_lang=target_response_lang)
+        if agronomic_advice:
+            final_ai_content, expert_sources = agronomic_advice
+            if expert_sources:
+                sources = expert_sources
+            logger.info("[DEBUG LOG] FAST AGRONOMY SYNTHESIS HIT (Time: <0.1s)")
+        else:
+            # Fallback to AI Provider
+            ai_provider = get_ai_provider()
+            raw_ai_content = await ai_provider.generate_response(
+                messages=formatted_history,
+                system_prompt=system_prompt,
+                max_new_tokens=max_tokens
+            )
+            final_ai_content = localize_ai_response(raw_ai_content, target_lang=target_response_lang)
 
     total_duration = time.perf_counter() - start_total_time
     logger.info("\n" + "="*80)
@@ -418,30 +431,49 @@ async def process_chat_message_stream(
         logger.info("[DEBUG LOG] Retrieved RAG Knowledge (%d chars):\n%s",
                     len(rag_context) if rag_context else 0, rag_context if rag_context else "(None)")
         logger.info("[DEBUG LOG] Final Prompt Sent to Model:\n%s", system_prompt)
-        logger.info("="*80)
+        # Check ultra-fast expert agronomic synthesis
+        agronomic_advice = generate_expert_agronomic_advice(
+            query=message_content,
+            target_crop=target_crop,
+            intent=classification.get("intent", "GENERAL_FARMING"),
+            farmer_context=farmer_context,
+            weather_context=weather_context,
+            rag_context=rag_context,
+            target_language=target_response_lang
+        )
 
-        ai_provider = get_ai_provider()
-        
-        # Stream tokens live
-        try:
-            async for token_chunk in ai_provider.generate_response_stream(
-                messages=formatted_history,
-                system_prompt=system_prompt,
-                max_new_tokens=max_tokens
-            ):
-                if token_chunk:
-                    full_generated_text += token_chunk
-                    yield f"data: {json.dumps({'type': 'token', 'chunk': token_chunk})}\n\n"
-        except Exception as stream_err:
-            logger.warning("Streaming error, falling back to sync generation: %s", stream_err)
-            full_generated_text = await ai_provider.generate_response(
-                messages=formatted_history,
-                system_prompt=system_prompt,
-                max_new_tokens=max_tokens
-            )
-            yield f"data: {json.dumps({'type': 'token', 'chunk': full_generated_text})}\n\n"
+        if agronomic_advice:
+            fast_content, expert_sources = agronomic_advice
+            if expert_sources:
+                sources = expert_sources
+            full_generated_text = fast_content
+            logger.info("[DEBUG LOG] FAST STREAMING HIT (Immediate token dispatch)")
+            async for token_chunk in stream_fast_tokens(fast_content):
+                yield f"data: {json.dumps({'type': 'token', 'chunk': token_chunk})}\n\n"
+            final_ai_content = fast_content
+        else:
+            ai_provider = get_ai_provider()
+            
+            # Stream tokens live from AI model
+            try:
+                async for token_chunk in ai_provider.generate_response_stream(
+                    messages=formatted_history,
+                    system_prompt=system_prompt,
+                    max_new_tokens=max_tokens
+                ):
+                    if token_chunk:
+                        full_generated_text += token_chunk
+                        yield f"data: {json.dumps({'type': 'token', 'chunk': token_chunk})}\n\n"
+            except Exception as stream_err:
+                logger.warning("Streaming error, falling back to sync generation: %s", stream_err)
+                full_generated_text = await ai_provider.generate_response(
+                    messages=formatted_history,
+                    system_prompt=system_prompt,
+                    max_new_tokens=max_tokens
+                )
+                yield f"data: {json.dumps({'type': 'token', 'chunk': full_generated_text})}\n\n"
 
-        final_ai_content = localize_ai_response(full_generated_text, target_lang=target_response_lang)
+            final_ai_content = localize_ai_response(full_generated_text, target_lang=target_response_lang)
 
     # Save to database
     sources_json_str = json.dumps(sources) if sources else None

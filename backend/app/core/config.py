@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     USE_LORA: bool = True
     DEVICE: str = "auto"
     FAST_RESPONSE_MODE: bool = True
-    MAX_NEW_TOKENS: int = 350
-    MAX_TOTAL_NEW_TOKENS: int = 700
+    MAX_NEW_TOKENS: int = 220
+    MAX_TOTAL_NEW_TOKENS: int = 350
     DO_SAMPLE: bool = False
     TEMPERATURE: float = 0.0
     TOP_P: float = 0.9

@@ -1,2 +1,34 @@
-# DEMONSTRATION CONTENT — Fertilizer Dosage & Balanced Nutrition
-Balanced fertilizer application guidelines for major field crops.
+# Comprehensive Agricultural Fertilizer & NPK Nutrition Manual
+
+## 1. Paddy / Rice (వరి / धान) Fertilizer & NPK Guidelines
+- Standard Optimal N-P-K Ratio: 120 : 60 : 40 kg/ha (approx 50 kg Nitrogen : 25 kg Phosphorus : 15 kg Potash per acre).
+- Black Soil (Clay Loam) Special Guidance: Black soils are naturally rich in potash and have high clay content with heavy water retention, but are frequently deficient in available Phosphorus and Zinc.
+- Application Schedule for Paddy in Black Soil:
+  1. Basal Dose (At Final Puddling/Transplanting): 100% Phosphorus (DAP 50 kg or SSP 150 kg/acre) + 50% Potash (MOP 15-20 kg/acre) + 25% Nitrogen (Urea 25-30 kg/acre).
+  2. First Top Dressing (Active Tillering Stage, 20-25 days after transplanting): 50% Nitrogen (Urea 50-55 kg/acre) + Zinc Sulphate (21% Zn at 10-12 kg/acre or 33% Chelated Zn at 6 kg/acre to prevent Khaira disease / zinc deficiency common in waterlogged black soils).
+  3. Second Top Dressing (Panicle Initiation Stage, 40-45 DAT): Remaining 25% Nitrogen (Urea 25-30 kg/acre) + Remaining 50% Potash (MOP 15-20 kg/acre) to increase grain filling, reduce chaffy grains, and strengthen stems against lodging.
+- Water Management during Fertilizer Application: Drain standing water prior to urea application; re-flood with a shallow 2-3 cm layer 24-48 hours later to maximize nitrogen uptake and prevent volatilization/leaching losses.
+
+## 2. Tomato (టమాటా / टमाटर) Fertilizer & NPK Guidelines
+- Optimal N-P-K Ratio: 150 : 100 : 120 kg/ha (approx 60 : 40 : 50 kg/acre).
+- Basal: 5-8 tonnes FYM/Compost + 100% P (SSP/DAP) + 30% N + 30% K.
+- Vegetative & Flowering: Split Nitrogen into 3 top dressings every 20 days.
+- Micronutrients: Foliar spray of Calcium Nitrate (1%) and Boron (0.2%) at flowering to prevent Blossom End Rot (BER) and fruit cracking.
+
+## 3. Cotton (పత్తి / कपास) Fertilizer & NPK Guidelines
+- Optimal N-P-K Ratio: 120 : 60 : 60 kg/ha (approx 50 : 25 : 25 kg/acre for Bt cotton).
+- Basal: Full P (SSP 150 kg/acre) + 25% N + 25% K.
+- Square Formation & Boll Development (45 & 75 DAS): Apply remaining N and K in 2 equal splits. Foliar spray 1% Magnesium Sulphate + 1% 19:19:19 to prevent leaf reddening.
+
+## 4. Chilli / Pepper (మిర్చి / मिर्च) Fertilizer & NPK Guidelines
+- Optimal N-P-K Ratio: 150 : 80 : 80 kg/ha (approx 60 : 35 : 35 kg/acre).
+- Basal: Full P + 25% N + 25% K + 10 kg Sulphur.
+- Top Dressing: 3 equal splits at 30, 60, and 90 DAT. Micronutrient spray of Zinc + Boron at flower initiation.
+
+## 5. Groundnut / Peanut (వేరుశనగ / मूंगफली) Fertilizer & NPK Guidelines
+- Optimal N-P-K Ratio: 20 : 40 : 40 kg/ha (approx 10 : 20 : 20 kg/acre) as groundnut fixes its own atmospheric nitrogen.
+- Gypsum Application: Critical application of 200 kg Gypsum/acre at peg formation (40-45 DAS) provides Calcium and Sulphur essential for pod filling and kernel formation.
+
+## 6. Maize / Corn (మొక్కజొన్న / मक्का) Fertilizer & NPK Guidelines
+- Optimal N-P-K Ratio: 120 : 60 : 40 kg/ha (approx 50 : 25 : 18 kg/acre).
+- Splits: Basal (Full P + 25% N + 50% K), Knee-high stage (30 DAS: 50% N), Tasseling stage (50 DAS: 25% N + 50% K).
