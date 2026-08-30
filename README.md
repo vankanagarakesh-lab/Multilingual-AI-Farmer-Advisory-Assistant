@@ -419,9 +419,13 @@ npm run dev
 
 ---
 
-## 👨‍💻 Author & Acknowledgements
+## 👥 Authors & Collaborators
 
-- **Lead Developer**: [Rakesh Vankanagarakesh](https://github.com/vankanagarakesh-lab)
+| Contributor | GitHub Profile | Role |
+| :--- | :--- | :--- |
+| **Rakesh Vankanagara** | [@vankanagarakesh-lab](https://github.com/vankanagarakesh-lab) | Lead Developer & AI/ML Architecture |
+| **Omkar** | [@omkar136](https://github.com/omkar136) | Collaborator & Developer |
+
 - **Project Repository**: [Multilingual-AI-Farmer-Advisory-Assistant](https://github.com/vankanagarakesh-lab/Multilingual-AI-Farmer-Advisory-Assistant)
 - **License**: Released under the [MIT License](LICENSE).
 
