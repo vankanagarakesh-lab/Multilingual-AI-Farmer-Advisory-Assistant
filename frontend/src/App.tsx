@@ -8,6 +8,8 @@ import { ConversationsPage } from './pages/ConversationsPage';
 import { FarmerOnboardingForm } from './components/onboarding/FarmerOnboardingForm';
 import { Loader2 } from 'lucide-react';
 
+import { SimulatorPage } from './pages/SimulatorPage';
+
 export const AppContent: React.FC = () => {
   const { user, farmerProfile, isLoading } = useAuth();
 
@@ -31,6 +33,7 @@ export const AppContent: React.FC = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<ChatPage />} />
         <Route path="/chat/:conversationId" element={<ChatPage />} />
+        <Route path="/simulator" element={<SimulatorPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/conversations" element={<ConversationsPage />} />
       </Route>

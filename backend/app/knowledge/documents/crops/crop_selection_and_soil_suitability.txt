@@ -1,0 +1,28 @@
+# Crop Selection, Soil Suitability & Weather Advisory Guide
+
+General Agronomic Guidelines for Andhra Pradesh & Telangana:
+
+1. Black Soils (Regur / Heavy Clay):
+- Characteristics: High moisture retention, rich in calcium carbonate, potash, and magnesium.
+- Ideal Crops: Cotton (పత్తి), Chilli (మిరప), Maize (మొక్కజొన్న), Red Gram / Pigeonpea (కందులు), Bengal Gram / Chickpea (శనగలు), Groundnut (వేరుశనగ), Soybeans, Sunflower.
+- Andhra / Telangana Hubs: Guntur, Prakasam, Kurnool, Khammam, Adilabad, Warangal.
+
+2. Red Loam & Sandy Loam Soils:
+- Characteristics: Porous, well-drained, moderate fertility, responds well to manure.
+- Ideal Crops: Groundnut (వేరుశనగ), Millets (రాగులు, జొన్నలు, సజ్జలు), Maize (మొక్కజొన్న), Pulses (పెసలు, మినుములు), Vegetables (టమోటా, వంగ), Castor.
+- Andhra / Telangana Hubs: Anantapur, Chittoor, Kadapa, Mahabubnagar, Nalgonda.
+
+3. Alluvial & Canal Irrigated Delta Soils:
+- Characteristics: Deep, fertile, high water table.
+- Ideal Crops: Rice / Paddy (వరి), Sugarcane (చెరకు), Banana, Vegetables.
+- Andhra / Telangana Hubs: East & West Godavari, Krishna, Guntur delta belt.
+
+4. Water Availability & Rainfall Matching:
+- High Rainfall / Canal Water: Rice, Sugarcane, Maize.
+- Moderate Water / Normal Rains: Cotton, Chilli, Groundnut, Maize, Vegetables.
+- Low Rainfall / Drought / Rain Delay: Millets (Pearl Millet, Finger Millet), Green Gram, Black Gram, Groundnut, Cowpea, Horse Gram.
+
+పంటల ఎంపిక మరియు నేల అనుకూలత సూచనలు (తెలుగు):
+- నల్లరేగడి నేలలు (Black Soil): పత్తి (Cotton), మిర్చి (Chilli), మొక్కజొన్న (Maize), కందులు (Red Gram), శనగలు, వేరుశనగ పంటలకు అత్యంత అనుకూలం. గుంటూరు, ప్రకాశం, ఖమ్మం ప్రాంతాల్లో అధిక దిగుబడి వస్తుంది.
+- ఎర్ర నేలలు / ఇసుక నేలలు (Red Soil): వేరుశనగ (Groundnut), చిరుధాన్యాలు (Millets - రాగులు, జొన్నలు), పెసలు, మినుములు, కూరగాయలు (టమోటా).
+- నీటి లభ్యత తక్కువగా ఉన్నప్పుడు: తక్కువ నీటితో పండే వేరుశనగ, చిరుధాన్యాలు, పెసలు లేదా కందులు సాగు చేయడం శ్రేయస్కరం.

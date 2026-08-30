@@ -17,3 +17,12 @@ class HuggingFaceProvider(AIBaseProvider):
         max_new_tokens: Optional[int] = None
     ) -> str:
         return await self.manager.generate_response(messages, system_prompt, max_new_tokens)
+
+    async def generate_response_stream(
+        self,
+        messages: List[Dict[str, str]],
+        system_prompt: str,
+        max_new_tokens: Optional[int] = None
+    ):
+        async for chunk in self.manager.generate_response_stream(messages, system_prompt, max_new_tokens):
+            yield chunk

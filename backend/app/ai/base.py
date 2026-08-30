@@ -12,3 +12,13 @@ class AIBaseProvider(ABC):
     ) -> str:
         """Generate a response from the AI model asynchronously."""
         pass
+
+    async def generate_response_stream(
+        self,
+        messages: List[Dict[str, str]],
+        system_prompt: str,
+        max_new_tokens: Optional[int] = None
+    ):
+        """Yield generated token chunks asynchronously."""
+        resp = await self.generate_response(messages, system_prompt, max_new_tokens)
+        yield resp

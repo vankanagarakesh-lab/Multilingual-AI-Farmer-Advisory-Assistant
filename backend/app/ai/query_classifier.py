@@ -131,6 +131,21 @@ DEFINITION_PREFIXES = [
 ]
 
 
+# Crop Recommendation keywords
+CROP_RECOMMENDATION_KEYWORDS = [
+    "what crop", "which crop", "suggest crop", "crop suggestion", "crop suggest",
+    "recommend crop", "crop recommendation", "what can i grow", "which crop should i grow",
+    "what to sow", "best crop", "crop for my soil", "crop for my land", "suitable crop",
+    "crop for my farm", "crops to plant", "crop selection", "recommend a crop",
+    "what crops", "suggest for me", "crop can you suggest",
+    # Telugu
+    "ఏ పంట", "ఏమి పంట", "ఏ పంట వేయాలి", "ఏ పంట సాగు", "పంట సూచన", "ఏ పంట మంచిది",
+    "నా నేలకు ఏ పంట", "నా పొలానికి ఏ పంట", "ఏ పంట పండించాలి", "పంట ఎంపిక", "ఏ పంట లాభం",
+    # Hindi
+    "कौन सी फसल", "कौन सी खेती", "फसल सुझाव", "क्या बोएं", "मेरी जमीन के लिए फसल",
+    "कौन सी फसल लगाएं", "उपयुक्त फसल"
+]
+
 # Greeting keywords
 GREETING_KEYWORDS = [
     "hi", "hello", "hey", "namaste", "namaskaram", "good morning", "good evening", "greetings",
@@ -164,7 +179,7 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
             "intent": "GREETING",
             "crop": None,
             "category": None,
-            "max_tokens": 60,
+            "max_tokens": 100,
             "needs_followup": False
         }
 
@@ -174,15 +189,26 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
     has_pest = any(k in text_lower for k in PEST_KEYWORDS)
     has_fertilizer = any(k in text_lower for k in FERTILIZER_SOIL_KEYWORDS)
     has_irrigation = any(k in text_lower for k in IRRIGATION_KEYWORDS)
+    has_crop_rec = any(k in text_lower for k in CROP_RECOMMENDATION_KEYWORDS)
     is_definition = any(p in text_lower for p in DEFINITION_PREFIXES)
 
-    # 1. Simple informational / definition query
+    # 1. Crop Recommendation Inquiry
+    if has_crop_rec:
+        return {
+            "intent": "CROP_RECOMMENDATION",
+            "crop": detected_crop,
+            "category": "crop_selection",
+            "max_tokens": None,
+            "needs_followup": False
+        }
+
+    # 2. Simple informational / definition query
     if is_definition and not has_symptom and not has_pest:
         return {
             "intent": "SIMPLE_QUESTION",
             "crop": detected_crop,
             "category": "farm_management",
-            "max_tokens": 100,
+            "max_tokens": None,
             "needs_followup": False
         }
 
@@ -194,14 +220,14 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
                 "intent": "INSUFFICIENT_INFO",
                 "crop": None,
                 "category": "diseases",
-                "max_tokens": 90,
+                "max_tokens": None,
                 "needs_followup": True
             }
         return {
             "intent": "CROP_DISEASE_OR_SYMPTOM",
             "crop": detected_crop,
             "category": "diseases",
-            "max_tokens": 220,
+            "max_tokens": None,
             "needs_followup": False
         }
 
@@ -212,14 +238,14 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
                 "intent": "INSUFFICIENT_INFO",
                 "crop": None,
                 "category": "pests",
-                "max_tokens": 90,
+                "max_tokens": None,
                 "needs_followup": True
             }
         return {
             "intent": "PEST_PROBLEM",
             "crop": detected_crop,
             "category": "pests",
-            "max_tokens": 220,
+            "max_tokens": None,
             "needs_followup": False
         }
 
@@ -229,7 +255,7 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
             "intent": "FERTILIZER_SOIL",
             "crop": detected_crop,
             "category": "fertilizers" if "fertilizer" in text_lower or "ఎరువు" in text_lower else "soil",
-            "max_tokens": 180,
+            "max_tokens": None,
             "needs_followup": False
         }
 
@@ -239,7 +265,7 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
             "intent": "IRRIGATION_WATER",
             "crop": detected_crop,
             "category": "irrigation",
-            "max_tokens": 180,
+            "max_tokens": None,
             "needs_followup": False
         }
 
@@ -248,6 +274,6 @@ def classify_query(text: str, farmer_crop: Optional[str] = None) -> Dict[str, An
         "intent": "GENERAL_FARMING",
         "crop": detected_crop,
         "category": "farm_management",
-        "max_tokens": 180,
+        "max_tokens": None,
         "needs_followup": False
     }

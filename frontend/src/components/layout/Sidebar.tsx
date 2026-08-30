@@ -99,17 +99,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           </div>
 
-          {/* New Conversation Button */}
-          <button
-            onClick={() => {
-              onNewConversation();
-              onClose();
-            }}
-            className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-emerald-900/30 transition duration-150 active:scale-[0.98]"
-          >
-            <Plus className="w-4 h-4" />
-            <span>New Conversation</span>
-          </button>
+          {/* Action Buttons */}
+          <div className="space-y-2">
+            <button
+              onClick={() => {
+                onNewConversation();
+                onClose();
+              }}
+              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-emerald-900/30 transition duration-150 active:scale-[0.98]"
+            >
+              <Plus className="w-4 h-4" />
+              <span>New Conversation</span>
+            </button>
+
+            <button
+              onClick={() => {
+                navigate('/simulator');
+                onClose();
+              }}
+              className={`w-full py-2 px-3 rounded-xl flex items-center justify-between text-xs font-semibold transition border ${
+                location.pathname === '/simulator'
+                  ? 'bg-gradient-to-r from-emerald-600/30 to-teal-500/20 text-emerald-300 border-emerald-500/40 shadow-inner'
+                  : 'bg-slate-950/70 hover:bg-slate-800/80 text-slate-300 hover:text-emerald-400 border-slate-800'
+              }`}
+            >
+              <div className="flex items-center space-x-2">
+                <span className="text-sm">🌾</span>
+                <span>Farm Simulator</span>
+              </div>
+              <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold">
+                VISION
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Conversations History List */}

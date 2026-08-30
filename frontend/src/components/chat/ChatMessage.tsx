@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Sprout, User, AlertTriangle, Volume2, Loader2, BookOpen, Pause } from 'lucide-react';
+import { Sprout, User, AlertTriangle, Volume2, Loader2, BookOpen, Pause, Sparkles } from 'lucide-react';
 import { Message } from '../../types';
 import { synthesizeVoice } from '../../services/api';
 
@@ -290,9 +290,18 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               <span className="text-xs font-bold text-slate-300">
                 {isUser ? 'You' : 'KRISHI AI'}
               </span>
-              <span className="text-[10px] text-slate-500">
-                {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+              {message.created_at && (
+                <span className="text-[10px] text-slate-500">
+                  {(() => {
+                    try {
+                      const d = new Date(message.created_at);
+                      return isNaN(d.getTime()) ? '' : d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    } catch {
+                      return '';
+                    }
+                  })()}
+                </span>
+              )}
             </div>
 
             {/* Language Badge */}
@@ -319,55 +328,71 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               </div>
             ) : (
               <>
-                {renderFormattedContent(message.content)}
-
-                {/* Sources UI Section */}
-                {message.sources && message.sources.length > 0 && (
-                  <div className="mt-4 p-3 rounded-xl bg-slate-800/80 border border-slate-700/70 text-xs">
-                    <div className="flex items-center space-x-1.5 font-semibold text-emerald-400 mb-1.5">
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>📚 Sources Used</span>
+                {!message.content ? (
+                  <div className="py-2.5 px-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/20 inline-flex items-center space-x-3 text-emerald-300 text-xs sm:text-sm font-medium animate-pulse">
+                    <div className="w-5 h-5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                      <Sparkles className="w-3.5 h-3.5 animate-spin" />
                     </div>
-                    <ul className="space-y-1 text-slate-300 pl-4 list-disc">
-                      {message.sources.map((src, sIdx) => (
-                        <li key={sIdx} className="leading-tight">
-                          <span className="font-medium text-slate-200">{src.title}</span>
-                          {src.source && <span className="text-slate-400 ml-1">({src.source})</span>}
-                        </li>
-                      ))}
-                    </ul>
+                    <span>KRISHI AI is thinking…</span>
+                    <div className="flex space-x-1 items-center ml-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    </div>
                   </div>
-                )}
+                ) : (
+                  <>
+                    {renderFormattedContent(message.content)}
 
-                {/* Voice Response Playback Button */}
-                <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center">
-                  <button
-                    onClick={handleToggleAudio}
-                    disabled={isLoadingAudio}
-                    className="
-                      inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg
-                      bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/40
-                      text-xs text-emerald-300 font-medium transition active:scale-95 disabled:opacity-50
-                    "
-                  >
-                    {isLoadingAudio ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
-                        <span>Generating voice...</span>
-                      </>
-                    ) : isPlayingAudio ? (
-                      <>
-                        <Pause className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                        <span>Pause Voice</span>
-                      </>
-                    ) : (
-                      <>
-                        <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>🔊 Listen</span>
-                      </>
+                    {/* Sources UI Section */}
+                    {message.sources && message.sources.length > 0 && (
+                      <div className="mt-4 p-3 rounded-xl bg-slate-800/80 border border-slate-700/70 text-xs">
+                        <div className="flex items-center space-x-1.5 font-semibold text-emerald-400 mb-1.5">
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>📚 Sources Used</span>
+                        </div>
+                        <ul className="space-y-1 text-slate-300 pl-4 list-disc">
+                          {message.sources.map((src, sIdx) => (
+                            <li key={sIdx} className="leading-tight">
+                              <span className="font-medium text-slate-200">{src.title}</span>
+                              {src.source && <span className="text-slate-400 ml-1">({src.source})</span>}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
-                  </button>
-                </div>
+
+                    {/* Voice Response Playback Button */}
+                    <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center">
+                      <button
+                        onClick={handleToggleAudio}
+                        disabled={isLoadingAudio}
+                        className="
+                          inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg
+                          bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/40
+                          text-xs text-emerald-300 font-medium transition active:scale-95 disabled:opacity-50
+                        "
+                      >
+                        {isLoadingAudio ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                            <span>Generating voice...</span>
+                          </>
+                        ) : isPlayingAudio ? (
+                          <>
+                            <Pause className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                            <span>Pause Voice</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>🔊 Listen</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

@@ -37,7 +37,7 @@ class OllamaProvider(AIBaseProvider):
                 "temperature": settings.TEMPERATURE,
                 "top_p": settings.TOP_P,
                 "repeat_penalty": settings.REPETITION_PENALTY,
-                "num_ctx": 2048,
+                "num_ctx": 4096,
             }
         }
 

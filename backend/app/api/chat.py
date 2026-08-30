@@ -8,10 +8,11 @@ from app.schemas.chat import (
     DiseaseDetectionResponse
 )
 from app.services.auth_service import get_current_user
-from app.services.chat_service import process_chat_message
 from app.services.disease_service import get_disease_detector
 from app.services.farmer_service import get_farmer_profile
 from app.models.user import User
+from fastapi.responses import StreamingResponse
+from app.services.chat_service import process_chat_message, process_chat_message_stream
 
 router = APIRouter(prefix="/api/chat", tags=["AI Chat"])
 
@@ -28,7 +29,31 @@ async def send_chat_message(
         message_content=payload.message,
         conversation_id=payload.conversation_id,
         response_language=payload.response_language,
-        image_data=payload.image_data
+        image_data=payload.image_data,
+        weather_data=payload.weather_data
+    )
+
+
+@router.post("/message/stream")
+async def send_chat_message_stream_endpoint(
+    payload: ChatMessageRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Streaming chat endpoint providing token-by-token real-time SSE stream with farmer & weather context.
+    """
+    return StreamingResponse(
+        process_chat_message_stream(
+            db=db,
+            user_id=current_user.id,
+            message_content=payload.message,
+            conversation_id=payload.conversation_id,
+            response_language=payload.response_language,
+            image_data=payload.image_data,
+            weather_data=payload.weather_data
+        ),
+        media_type="text/event-stream"
     )
 
 

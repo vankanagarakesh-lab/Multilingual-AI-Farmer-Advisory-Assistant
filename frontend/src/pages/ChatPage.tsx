@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
-import { Sprout, Loader2, Wheat, MapPin } from 'lucide-react';
+import { useParams, useNavigate, useLocation, useOutletContext } from 'react-router-dom';
+import { Sprout, Loader2, Wheat, MapPin, Sparkles, TrendingUp, Droplets } from 'lucide-react';
 import { ChatHeader } from '../components/chat/ChatHeader';
 import { ChatMessage } from '../components/chat/ChatMessage';
 import { ChatInput } from '../components/chat/ChatInput';
 import { SuggestedQuestions } from '../components/chat/SuggestedQuestions';
+import { FarmSimulatorModal } from '../components/simulator/FarmSimulatorModal';
 import { conversationService } from '../services/conversationService';
 import { chatService } from '../services/chatService';
 import { Message, ConversationDetail } from '../types';
@@ -18,6 +19,7 @@ interface OutletContextType {
 export const ChatPage: React.FC = () => {
   const { conversationId } = useParams<{ conversationId?: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { onOpenMobileSidebar, refreshConversations } = useOutletContext<OutletContextType>();
   const { farmerProfile, user } = useAuth();
 
@@ -27,12 +29,22 @@ export const ChatPage: React.FC = () => {
   const [isFetchingHistory, setIsFetchingHistory] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastFailedPayload, setLastFailedPayload] = useState<{ text: string; lang?: string; image?: string } | null>(null);
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Check if routed with an initial prompt from Simulator
+  useEffect(() => {
+    const state = location.state as { initialPrompt?: string } | null;
+    if (state?.initialPrompt) {
+      handleSendMessage(state.initialPrompt);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (conversationId) {
@@ -76,10 +88,12 @@ export const ChatPage: React.FC = () => {
     setIsLoading(true);
 
     const currentConvId = conversationId ? parseInt(conversationId, 10) : undefined;
+    const tempUserMsgId = Date.now();
+    const tempAiMsgId = Date.now() + 1;
 
-    // Optimistically render user message
+    // Optimistically render user message & thinking placeholder
     const tempUserMsg: Message = {
-      id: Date.now(),
+      id: tempUserMsgId,
       conversation_id: currentConvId || 0,
       role: 'user',
       content: text,
@@ -87,36 +101,92 @@ export const ChatPage: React.FC = () => {
       imageUrl: attachedImage,
       created_at: new Date().toISOString()
     };
-    setMessages((prev) => [...prev, tempUserMsg]);
+
+    const tempAiMsg: Message = {
+      id: tempAiMsgId,
+      conversation_id: currentConvId || 0,
+      role: 'assistant',
+      content: '',
+      language: responseLang,
+      created_at: new Date().toISOString()
+    };
+
+    setMessages((prev) => [...prev, tempUserMsg, tempAiMsg]);
+
+    // Read real-time weather cache if available
+    let clientWeatherData = undefined;
+    try {
+      const cachedWeatherStr = localStorage.getItem('krishi_last_weather');
+      if (cachedWeatherStr) {
+        clientWeatherData = JSON.parse(cachedWeatherStr);
+      }
+    } catch (e) {
+      // ignore
+    }
 
     try {
-      const res = await chatService.sendMessage({
-        message: text,
-        conversation_id: currentConvId,
-        response_language: responseLang,
-        image_data: attachedImage
-      });
+      await chatService.sendMessageStream(
+        {
+          message: text,
+          conversation_id: currentConvId,
+          response_language: responseLang,
+          image_data: attachedImage,
+          weather_data: clientWeatherData
+        },
+        {
+          onInit: (initData) => {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === tempUserMsgId
+                  ? { ...initData.user_message, imageUrl: attachedImage || initData.user_message.image_url || initData.user_message.imageUrl }
+                  : m
+              )
+            );
+          },
+          onToken: (chunk) => {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === tempAiMsgId ? { ...m, content: m.content + chunk } : m
+              )
+            );
+          },
+          onDone: async (doneData) => {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === tempAiMsgId
+                  ? {
+                      ...doneData.ai_message,
+                      id: doneData.ai_message.id || tempAiMsgId,
+                      sources: doneData.ai_message.sources || (doneData as any).sources
+                    }
+                  : m
+              )
+            );
+            setIsLoading(false);
 
-      // Update state with confirmed messages, preserving attached image on user message
-      setMessages((prev) => {
-        const filtered = prev.filter((m) => m.id !== tempUserMsg.id);
-        const confirmedUserMsg = { ...res.user_message, imageUrl: attachedImage || res.user_message.image_url || res.user_message.imageUrl };
-        return [...filtered, confirmedUserMsg, res.ai_message];
-      });
-
-      // If new conversation, update URL and refresh sidebar
-      if (!currentConvId && res.conversation_id) {
-        await refreshConversations();
-        navigate(`/chat/${res.conversation_id}`, { replace: true });
-      } else {
-        await refreshConversations();
-      }
+            if (!currentConvId && doneData.conversation_id) {
+              await refreshConversations();
+              navigate(`/chat/${doneData.conversation_id}`, { replace: true });
+            } else {
+              await refreshConversations();
+            }
+          },
+          onError: (streamErr) => {
+            console.error('Streaming message error:', streamErr);
+            setMessages((prev) => prev.filter((m) => m.id !== tempAiMsgId));
+            const detail = streamErr?.response?.data?.detail || streamErr?.message || 'KRISHI AI is temporarily unavailable. Please check backend connection.';
+            setErrorMessage(detail);
+            setLastFailedPayload({ text, lang: responseLang, image: attachedImage });
+            setIsLoading(false);
+          }
+        }
+      );
     } catch (err: any) {
       console.error('Failed to send message:', err);
+      setMessages((prev) => prev.filter((m) => m.id !== tempAiMsgId));
       const detail = err.response?.data?.detail || 'KRISHI AI is temporarily unavailable. Please check backend connection.';
       setErrorMessage(detail);
       setLastFailedPayload({ text, lang: responseLang, image: attachedImage });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -155,6 +225,40 @@ export const ChatPage: React.FC = () => {
             <p className="text-sm text-slate-400 mt-2 max-w-lg leading-relaxed">
               What would you like to know about your farm today? KRISHI AI provides intelligent agricultural decision support for crop, soil, and irrigation management.
             </p>
+
+            {/* KRISHI VISION – AI Farm Future Simulator Hero Feature Banner */}
+            <div className="mt-5 w-full max-w-2xl bg-gradient-to-r from-emerald-950/80 via-slate-900 to-teal-950/80 border border-emerald-500/40 rounded-3xl p-5 text-left shadow-xl shadow-emerald-950/40 relative overflow-hidden group">
+              <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                      ★ NEW FEATURE
+                    </span>
+                    <span className="text-xs font-bold text-emerald-400">KRISHI VISION</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-white tracking-tight">
+                    AI Farm Future Simulator
+                  </h3>
+                  <p className="text-xs text-slate-300 italic">
+                    &ldquo;Don&apos;t just grow. Simulate your future before you invest.&rdquo;
+                  </p>
+                  <p className="text-[11px] text-slate-400 max-w-md">
+                    Simulate rainfall delay, water shortage, temperature anomalies, and market price volatility in real time to find the most profitable, lowest-risk crop.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsSimulatorOpen(true)}
+                  className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs shadow-lg shadow-emerald-900/50 flex items-center justify-center space-x-2 transition transform active:scale-95 shrink-0"
+                >
+                  <span className="text-base">🌾</span>
+                  <span>Simulate My Farm</span>
+                  <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                </button>
+              </div>
+            </div>
 
             {/* Farmer Profile Context Summary Card */}
             {farmerProfile && (farmerProfile.primary_crop || farmerProfile.location) && (
@@ -198,6 +302,12 @@ export const ChatPage: React.FC = () => {
         errorMessage={errorMessage}
         onRetry={lastFailedPayload ? handleRetry : undefined}
         initialLanguage={farmerProfile?.preferred_language || 'en'}
+      />
+
+      {/* Simulator Modal */}
+      <FarmSimulatorModal
+        isOpen={isSimulatorOpen}
+        onClose={() => setIsSimulatorOpen(false)}
       />
     </div>
   );

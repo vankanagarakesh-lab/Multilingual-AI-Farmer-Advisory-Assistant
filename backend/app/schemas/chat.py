@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict, Any
 from app.schemas.conversation import MessageResponse
 
 
@@ -8,6 +8,7 @@ class ChatMessageRequest(BaseModel):
     conversation_id: Optional[int] = None
     response_language: Optional[str] = None  # 'en', 'te', 'hi', etc.
     image_data: Optional[str] = None  # Base64 data URL
+    weather_data: Optional[Dict[str, Any]] = None
 
 
 class ChatMessageResponse(BaseModel):

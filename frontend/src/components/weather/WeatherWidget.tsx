@@ -198,7 +198,7 @@ export const WeatherWidget: React.FC = () => {
 
       const condition = getWeatherCondition(data.current?.weather_code || 0, data.current?.is_day === 1);
 
-      setWeather({
+      const weatherObj: WeatherData = {
         locationName: resolvedLocation,
         latitude: lat,
         longitude: lon,
@@ -224,7 +224,23 @@ export const WeatherWidget: React.FC = () => {
         },
         lastUpdated: new Date(),
         source: 'Live Meteorological Station'
-      });
+      };
+
+      setWeather(weatherObj);
+      try {
+        localStorage.setItem('krishi_last_weather', JSON.stringify({
+          locationName: weatherObj.locationName,
+          latitude: weatherObj.latitude,
+          longitude: weatherObj.longitude,
+          temperature: weatherObj.temperature,
+          humidity: weatherObj.humidity,
+          conditionText: weatherObj.conditionText,
+          nextRainCountdown: weatherObj.nextRain?.countdownText,
+          rainProbability: weatherObj.nextRain?.rainProbability || 0
+        }));
+      } catch (e) {
+        // silent storage catch
+      }
 
       if (isGpsAuto) {
         setStatusNotice(`📍 Location detected: ${resolvedLocation}`);

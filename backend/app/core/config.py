@@ -23,14 +23,15 @@ class Settings(BaseSettings):
     USE_LORA: bool = True
     DEVICE: str = "auto"
     FAST_RESPONSE_MODE: bool = True
-    MAX_NEW_TOKENS: int = 100
+    MAX_NEW_TOKENS: int = 350
+    MAX_TOTAL_NEW_TOKENS: int = 700
     DO_SAMPLE: bool = False
     TEMPERATURE: float = 0.0
     TOP_P: float = 0.9
-    REPETITION_PENALTY: float = 1.15
+    REPETITION_PENALTY: float = 1.12
     NO_REPEAT_NGRAM_SIZE: int = 0
     
-    MAX_CHAT_HISTORY: int = 4
+    MAX_CHAT_HISTORY: int = 2
     
     FRONTEND_URL: str = "http://localhost:5173"
 
@@ -40,7 +41,7 @@ class Settings(BaseSettings):
     MAX_AUDIO_FILE_SIZE_MB: int = 25
     MAX_AUDIO_DURATION_SECONDS: int = 120
     RAG_TOP_K: int = 2
-    RAG_MAX_CONTEXT_CHARS: int = 600
+    RAG_MAX_CONTEXT_CHARS: int = 350
     RAG_SCORE_THRESHOLD: float = 0.45
 
     model_config = SettingsConfigDict(
