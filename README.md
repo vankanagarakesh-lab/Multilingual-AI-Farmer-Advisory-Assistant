@@ -18,7 +18,7 @@
 [![SQLite / SQL](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 AI Plant Disease Detection](#-ai-plant-disease-detection-with-image-or-camera) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ Architecture & Pipelines](#️-system-architecture--data-pipelines) • [💻 Technical Languages & Stack](#-technical-programming-languages--technology-stack) • [📐 Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
+[🌟 Executive Summary](#-executive-summary--judge-evaluation-sheet) • [📸 Output Visual Showcase](#-output--visual-showcase) • [🌾 Intelligent Autonomous Farm](#-deep-dive-krishi-ai-future-intelligent-autonomous-farm) • [🔮 KRISHI VISION Simulator](#-deep-dive-krishi-vision-farm-future-simulator) • [🔬 AI Plant Disease Detection](#-ai-plant-disease-detection-with-image-or-camera) • [🗣️ Multilingual Voice AI](#-multilingual-voice--generative-ai-rag) • [🏛️ Architecture & Pipelines](#️-system-architecture--data-pipelines) • [💻 Technical Languages & Stack](#-technical-programming-languages--technology-stack) • [📐 Math Models](#-mathematical--agronomic-formulations) • [📡 API Reference](#-rest-api-documentation) • [🚀 Quick Start](#-quick-start--installation-guide)
 
 </div>
 
@@ -28,17 +28,17 @@
 
 Smallholder farmers in India confront high volatility due to climate unpredictability, volatile mandi commodity rates, and localized pest infestations. Most existing agricultural apps are simple lookup databases or text bots that require high literacy and provide static information.
 
-**KRISHI AI** is a complete decision-support system built around four key innovations:
+**KRISHI AI** is a complete decision-support & autonomous platform built around four key innovations:
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   KRISHI AI PILLARS                                    │
-├──────────────────────────┬──────────────────────────┬──────────────────────────────────┤
-│ 1. KRISHI VISION SIM     │ 2. EDGE COMPUTER VISION  │ 3. MULTILINGUAL VOICE & RAG      │
-│ Real-time "What-If"      │ MobileNetV2 diagnosing   │ Native speech & multi-script     │
-│ Agronomic, Financial,    │ 38 leaf disease classes  │ Indian language LLM with         │
-│ & Climate Simulator      │ with organic cures       │ verifiable agricultural citations│
-└──────────────────────────┴──────────────────────────┴──────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                           KRISHI AI PILLARS                                            │
+├──────────────────────────┬──────────────────────────┬──────────────────────────┬───────────────────────┤
+│ 1. AUTONOMOUS FARM TWIN  │ 2. KRISHI VISION SIM     │ 3. EDGE COMPUTER VISION  │ 4. MULTILINGUAL VOICE │
+│ AI + IoT Smart           │ Real-time "What-If"      │ MobileNetV2 diagnosing   │ Native speech &       │
+│ Irrigation telemetry,    │ Agronomic, Financial,    │ 38 leaf disease classes  │ multi-script LLM with │
+│ rain radar & pump relays │ & Climate Simulator      │ with organic cures       │ verifiable citations  │
+└──────────────────────────┴──────────────────────────┴──────────────────────────┴───────────────────────┘
 ```
 
 ### 🎯 Quick Evaluation Matrix for Judges
@@ -100,6 +100,152 @@ Smallholder farmers in India confront high volatility due to climate unpredictab
 *Intelligent crop recommendations specifically optimized for rainfed, arid, and drought-prone regions.*
 
 ![Crop Advisory Recommendation](screenshots/05_crop_advisory_recommendation.png)
+
+---
+
+### 7. 🌾🤖💧 Flagship Innovation — Intelligent Autonomous Farm (AI + IoT Smart Irrigation Simulation)
+*Interactive 2.5D visual farm twin with embedded capacitive soil moisture probes, LoRa wireless pulses, KRISHI AI edge brain hub, relay triggers, and animated high-pressure water pipe flow.*
+
+![Autonomous Farm Simulation](screenshots/07_autonomous_farm_simulation.png)
+
+> **Key Elements in Farm Twin:**
+> - **Active Root-Zone Hydration**: Capacitive RS485 probe embedded at 15cm soil depth streaming real-time moisture (`22%`) and soil temp (`28.7°C`).
+> - **Autonomous KRISHI AI Brain Node**: Evaluates crop water consumption against satellite rainfall radar and actuates the solid-state relay.
+> - **Animated Water Flow & Sprinklers**: Dynamic water flow lines and active spray droplets when the 1.5HP pump is triggered (`42 L/min`, `2.8 Bar`).
+
+---
+
+### 8. 🧠 AI Decision Engine & Interactive Moisture Slider Pump Control
+*Real-time agronomic multi-variable engine cross-referencing farmer crop profile, soil type, and rain radar with instant manual moisture slider testing.*
+
+![AI Decision & Smart Pump Control](screenshots/09_ai_decision_and_pump_control.png)
+
+> **Key Output Elements Highlighted:**
+> - **6 Real-Time Inputs Context Bar**: Farmer's Crop (`Rice`), Soil Type (`Black Clay`), Crop Stage (`Sowing / Nursery`), Current Weather (`Clear & Sunny`), Rain Prediction (`No rain in 7 days`), and Soil Moisture (`22%`).
+> - **Live AI Reasoning Output**: *“Soil moisture is low (22% < 35% critical threshold) and no rainfall is forecasted. KRISHI AI automatically initiated irrigation to protect rice at Sowing / Nursery.”*
+> - **Interactive Moisture Slider (`0% - 100%`)**: Real-time evaluation as slider is moved, enforcing autonomous decision rules.
+> - **3-Phase Submersible Motor Card**: Industrial pumping metrics showing flow rate (`42 L/min`), line pressure (`2.8 Bar`), and active safety load lock.
+
+---
+
+### 9. 📱 Real-Time Farmer SMS/App Notification Feed & Hardware Architecture
+*Dynamic alert feed dispatched to farmer's phone during autonomous irrigation cycles alongside production-ready ESP32 hardware topology.*
+
+![Farmer Notifications & Hardware Architecture](screenshots/08_farmer_notifications_and_iot_architecture.png)
+
+> **Key Output Elements Highlighted:**
+> - **Farmer Notification Feed**: Filterable logs with timestamped alerts (`💧 Soil Telemetry Check: Moisture dropped to 24%...`, `🤖 Autonomous Irrigation Started`, `🌧️ Rain detected in forecast. Irrigation stopped to save water`).
+> - **Future Real Hardware Integration**: 6-node physical architecture blueprint from Capacitive Probe ➔ ESP32 Controller ➔ KRISHI AI Backend ➔ AI Engine ➔ Relay Module ➔ Submersible Pump.
+
+---
+
+### 10. 🚀 Live AI Hackathon Demonstration Engine & Preset Scenarios
+*Automated 7-step presentation mode and 4 one-click scenario presets designed for live hackathon jury evaluation.*
+
+![Live AI Demo Engine & Scenarios](screenshots/10_live_ai_demo_engine_and_scenarios.png)
+
+> **Key Output Elements Highlighted:**
+> - **▶ Start Live AI Demo**: One-click automated 7-step sequence walking through sensor ingestion, profile matching, weather check, radar scan, AI neural decision, motor actuation, and farmer alert delivery.
+> - **4 Instant Simulation Scenarios**: *Scenario 1: Normal Moisture (55%)*, *Scenario 2: Low Moisture — Dry (22%)*, *Scenario 3: Low Moisture + Rain in 3h (24%)*, *Scenario 4: Optimal / Saturated (82%)*.
+
+---
+
+## 🌾🤖💧 Deep Dive: KRISHI AI Future (Intelligent Autonomous Farm)
+
+Traditional agriculture relies on manual guess-based borewell pumping, causing catastrophic groundwater depletion or root suffocation during unpredicted rainfall.
+
+**KRISHI AI Future: Intelligent Autonomous Farm** elevates KRISHI AI from a conversational advisor into an **autonomous edge-AI farm management platform**. It simulates a closed-loop AI + IoT smart irrigation ecosystem that makes decisions using live crop root sensors, microclimate evapotranspiration, and satellite rain radar.
+
+```
+                     COMPLETE AUTONOMOUS IRRIGATION FLOW
+        ┌─────────────────────────────────────────────────────────────┐
+        │  📡 Soil Moisture Sensor Probe (Capacitive RS485 / 15cm)     │
+        └──────────────────────────────┬──────────────────────────────┘
+                                       │
+                                       ▼
+        ┌─────────────────────────────────────────────────────────────┐
+        │  📶 ESP32 / LoRaWAN Microcontroller & Telemetry Telecasting │
+        └──────────────────────────────┬──────────────────────────────┘
+                                       │
+                                       ▼
+        ┌─────────────────────────────────────────────────────────────┐
+        │  🧠 KRISHI AI Decision Engine (Multi-Variable Crop Model)   │
+        └──────────────────────────────┬──────────────────────────────┘
+                                       │
+                                       ▼
+        ┌─────────────────────────────────────────────────────────────┐
+        │  🌧️ Live Meteorological & Satellite Rain Radar Analysis     │
+        └──────────────────────────────┬──────────────────────────────┘
+                                       │
+                                       ▼
+        ┌─────────────────────────────────────────────────────────────┐
+        │  ⚡ Autonomous Actuation: Solid-State Relay ➔ Motor ON/OFF  │
+        └──────────────────────────────┬──────────────────────────────┘
+                                       │
+                                       ▼
+        ┌─────────────────────────────────────────────────────────────┐
+        │  📱 Farmer SMS, WhatsApp & Push Notification Feed           │
+        └─────────────────────────────────────────────────────────────┘
+```
+
+### 🧠 The 4 Core Autonomous AI Decision Rules
+
+The decision engine evaluates the continuous root-zone soil moisture ($M_{\text{soil}}$), upcoming rainfall forecast arrival ($T_{\text{rain}}$), and precipitation probability ($P_{\text{rain}}$):
+
+```
+                                    AI DECISION LOGIC TREE
+                                               │
+                                               ▼
+                             Is Soil Moisture M_soil < 35%?
+                                    /               \
+                                 YES                 NO
+                                 /                     \
+                   Is Rain Forecasted Soon?             Is M_soil > 75%?
+                  (T_rain ≤ 5h & P_rain ≥ 50%)          /              \
+                         /           \                YES               NO
+                       YES            NO               │                 │
+                        │              │               ▼                 ▼
+                        ▼              ▼           [ RULE 4 ]        [ RULE 3 ]
+                   [ RULE 2 ]     [ RULE 1 ]     EXCESS MOISTURE   OPTIMAL MOISTURE
+                   DELAY RAIN      MOTOR ON       MOTOR LOCKED OFF    MOTOR OFF
+```
+
+| Decision Rule | Trigger Conditions | Motor Output | AI Reasoning & Agronomic Action |
+| :--- | :--- | :---: | :--- |
+| **Rule 1: Critical Dry + No Rain** | $M_{\text{soil}} < 35\%$ **AND** ($T_{\text{rain}} > 6\text{h}$ or $P_{\text{rain}} < 40\%$) | **🟢 MOTOR ON** | *“💧 Soil moisture dropped to 22%. Zero rainfall expected. Pump started automatically at 42 L/min to prevent crop wilting.”* |
+| **Rule 2: Low Moisture + Rain Forecast** | $M_{\text{soil}} < 35\%$ **AND** ($T_{\text{rain}} \le 5\text{h}$ and $P_{\text{rain}} \ge 50\%$) | **🔴 MOTOR OFF** *(Delayed)* | *“🌧️ Rain is expected in 3 hours (85% prob). KRISHI AI delayed irrigation to save ~1,450L of water and let nature replenish soil.”* |
+| **Rule 3: Optimal Hydration** | $35\% \le M_{\text{soil}} \le 75\%$ | **🔴 MOTOR OFF** *(Standby)* | *“✅ Optimal root-zone hydration maintained (55%). Evapotranspiration balanced. Irrigation motor safely shut down.”* |
+| **Rule 4: Excess Moisture Warning** | $M_{\text{soil}} > 75\%$ | **🔴 MOTOR OFF** *(Safeguard)* | *“⚠️ Excess water detected (82%). Motor locked OFF to protect roots from fungal infection, root rot, and fertilizer leaching.”* |
+
+---
+
+### 🚀 Automated 7-Step Hackathon Live AI Demo Runner
+The dashboard features a **`▶ Start Live AI Demo`** button engineered for live hackathon jury presentations:
+1. **Step 1: Reading soil sensor...** ➔ RS485 capacitive probe streams real-time moisture (`22%`) and root temperature (`29°C`).
+2. **Step 2: Checking farmer profile...** ➔ Pulls crop classification (*Rice/Tomato*), soil type (*Black Clay*), and growth stage (*Nursery*).
+3. **Step 3: Checking weather conditions...** ➔ Evaluates ambient microclimate (`35°C`, `42% RH`) and evaporation index.
+4. **Step 4: Checking rain prediction...** ➔ Scans Open-Meteo satellite radar for precipitation probability.
+5. **Step 5: KRISHI AI is making a decision...** ➔ Evaluates water deficit vs rain buffer to compute optimal actuation.
+6. **Step 6: Irrigation started or delayed...** ➔ Optocoupled relay trips; 3-phase pump activates with animated pipeline spray flow.
+7. **Step 7: Farmer notification sent.** ➔ Instant SMS and push notification dispatched to the farmer's mobile device.
+
+---
+
+### ⚙️ Production-Ready Future Real Hardware Topology
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                  HARDWARE INTEGRATION ARCHITECTURE                                    │
+├─────────────────────────┬─────────────────────────┬─────────────────────────┬─────────────────────────┤
+│ 1. Capacitive Probe     │ 2. ESP32 Controller     │ 3. 5V Relay Switch      │ 4. Submersible Pump     │
+│ • Industrial RS485      │ • Tensilica 240MHz      │ • 10A Optocoupler       │ • 1.5 HP - 5 HP 3-Phase │
+│ • 15cm Root Placement   │ • LoRaWAN 868/915 MHz   │ • Flyback Diode Safety  │ • Flow: 42-200 L/min    │
+│ • Analog 0-3.3V GPIO34  │ • MQTT over TLS 1.3     │ • Signal GPIO26 Out     │ • Drip & Sprinkler Grid │
+└─────────────────────────┴─────────────────────────┴─────────────────────────┴─────────────────────────┘
+```
+
+> **📌 Hackathon Demonstration Note:**
+> *Current version is a high-fidelity software twin and simulation designed for hackathon demonstration. The architecture is engineered for direct plug-and-play integration with physical ESP32 microcontrollers, solid-state relays, and industrial water pumps.*
 
 ---
 

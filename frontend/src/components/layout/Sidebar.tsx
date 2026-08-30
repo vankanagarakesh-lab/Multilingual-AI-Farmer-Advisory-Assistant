@@ -151,11 +151,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }`}
             >
               <div className="flex items-center space-x-2">
-                <span className="text-sm">🌾</span>
+                <span className="text-sm">🌱</span>
                 <span>{t('sidebar.simulator', 'Farm Simulator')}</span>
               </div>
               <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold">
                 VISION
+              </span>
+            </button>
+
+            {/* Intelligent Autonomous Farm Link */}
+            <button
+              onClick={() => {
+                navigate('/autonomous-farm');
+                onClose();
+              }}
+              className={`w-full py-2.5 px-3 rounded-xl flex items-center justify-between text-xs font-bold transition border group ${
+                location.pathname === '/autonomous-farm'
+                  ? 'bg-gradient-to-r from-emerald-600/40 via-teal-600/30 to-emerald-500/20 text-emerald-200 border-emerald-500/50 shadow-lg shadow-emerald-950/60 ring-1 ring-emerald-500/30'
+                  : 'bg-slate-950/70 hover:bg-slate-800/80 text-slate-300 hover:text-emerald-400 border-slate-800'
+              }`}
+            >
+              <div className="flex items-center space-x-2 min-w-0">
+                <span className="text-base group-hover:scale-110 transition-transform">🌾</span>
+                <span className="truncate">{t('sidebar.auto_farm', 'Intelligent Autonomous Farm')}</span>
+              </div>
+              <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-black shrink-0 tracking-wider">
+                {t('sidebar.future_badge', 'FUTURE AI')}
               </span>
             </button>
           </div>

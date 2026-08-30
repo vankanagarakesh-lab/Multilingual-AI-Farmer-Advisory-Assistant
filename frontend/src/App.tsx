@@ -10,6 +10,7 @@ import { Loader2 } from 'lucide-react';
 
 import { LanguageProvider } from './context/LanguageContext';
 import { SimulatorPage } from './pages/SimulatorPage';
+import { AutonomousFarmPage } from './pages/AutonomousFarmPage';
 
 export const AppContent: React.FC = () => {
   const { user, farmerProfile, isLoading } = useAuth();
@@ -35,6 +36,7 @@ export const AppContent: React.FC = () => {
         <Route path="/" element={<ChatPage />} />
         <Route path="/chat/:conversationId" element={<ChatPage />} />
         <Route path="/simulator" element={<SimulatorPage />} />
+        <Route path="/autonomous-farm" element={<AutonomousFarmPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/conversations" element={<ConversationsPage />} />
       </Route>
