@@ -15,8 +15,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
+import { useLanguage, normalizeLanguageCode } from '../../context/LanguageContext';
+
 export const FarmerOnboardingForm: React.FC = () => {
   const { onboardFarmer, isLoading } = useAuth();
+  const { setLanguage } = useLanguage();
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -27,6 +30,12 @@ export const FarmerOnboardingForm: React.FC = () => {
   const [preferredLanguage, setPreferredLanguage] = useState('Telugu');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleLanguageChange = (lang: string) => {
+    setPreferredLanguage(lang);
+    const code = normalizeLanguageCode(lang);
+    setLanguage(code, true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,6 +56,8 @@ export const FarmerOnboardingForm: React.FC = () => {
         primary_crop: primaryCrop.trim() || 'Crop Management',
         preferred_language: preferredLanguage
       });
+      const code = normalizeLanguageCode(preferredLanguage);
+      setLanguage(code, true);
       navigate('/', { replace: true });
     } catch (err: any) {
       console.error('Onboarding submission failed:', err);
@@ -194,7 +205,7 @@ export const FarmerOnboardingForm: React.FC = () => {
               </label>
               <select
                 value={preferredLanguage}
-                onChange={(e) => setPreferredLanguage(e.target.value)}
+                onChange={(e) => handleLanguageChange(e.target.value)}
                 className="w-full py-3 px-4 bg-slate-800/90 border border-slate-700/80 rounded-2xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
               >
                 <option value="Telugu">తెలుగు (Telugu - Recommended)</option>

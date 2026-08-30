@@ -4,12 +4,16 @@ import { MessageSquare, Menu, Calendar, ChevronRight, Loader2 } from 'lucide-rea
 import { conversationService } from '../services/conversationService';
 import { Conversation } from '../types';
 
+import { LanguageSwitcher } from '../components/layout/LanguageSwitcher';
+import { useLanguage } from '../context/LanguageContext';
+
 interface OutletContextType {
   onOpenMobileSidebar: () => void;
 }
 
 export const ConversationsPage: React.FC = () => {
   const { onOpenMobileSidebar } = useOutletContext<OutletContextType>();
+  const { t } = useLanguage();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -38,8 +42,9 @@ export const ConversationsPage: React.FC = () => {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <h2 className="text-sm font-semibold text-slate-200">Conversation History Archive</h2>
+          <h2 className="text-sm font-semibold text-slate-200">{t('sidebar.recent_chats', 'Conversation History Archive')}</h2>
         </div>
+        <LanguageSwitcher />
       </header>
 
       <div className="max-w-3xl w-full mx-auto p-4 sm:p-6 space-y-4">

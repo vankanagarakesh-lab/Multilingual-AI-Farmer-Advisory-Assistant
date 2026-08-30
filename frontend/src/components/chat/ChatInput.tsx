@@ -15,6 +15,8 @@ import {
 import { transcribeVoice } from '../../services/api';
 import { CameraModal } from './CameraModal';
 
+import { useLanguage } from '../../context/LanguageContext';
+
 interface ChatInputProps {
   onSendMessage: (message: string, responseLanguage?: string, attachedImage?: string) => void;
   isLoading: boolean;
@@ -28,8 +30,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   isLoading,
   errorMessage,
   onRetry,
-  initialLanguage = 'en'
 }) => {
+  const { currentLanguage, currentLanguageOption, cycleNextLanguage, t } = useLanguage();
   const [input, setInput] = useState('');
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [isAttachmentMenuOpen, setIsAttachmentMenuOpen] = useState(false);
@@ -37,14 +39,6 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessingVoice, setIsProcessingVoice] = useState(false);
   const [voiceError, setVoiceError] = useState<string | null>(null);
-
-  // Response & Voice Language: 'en' | 'te' | 'hi'
-  const [selectedLang, setSelectedLang] = useState<'en' | 'te' | 'hi'>(() => {
-    const clean = (initialLanguage || 'en').toLowerCase();
-    if (clean.includes('te') || clean.includes('telugu')) return 'te';
-    if (clean.includes('hi') || clean.includes('hindi')) return 'hi';
-    return 'en';
-  });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -80,7 +74,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setVoiceError('Please upload a valid plant or crop image file.');
+      setVoiceError(t('common.error', 'Please upload a valid plant or crop image file.'));
       return;
     }
 
@@ -100,24 +94,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     setIsCameraModalOpen(false);
   };
 
-  const cycleLanguage = () => {
-    setSelectedLang((prev) => {
-      if (prev === 'en') return 'te';
-      if (prev === 'te') return 'hi';
-      return 'en';
-    });
-  };
-
   const getMicLangCode = () => {
-    if (selectedLang === 'te') return 'te-IN';
-    if (selectedLang === 'hi') return 'hi-IN';
-    return 'en-IN';
+    return currentLanguageOption.bcp47;
   };
 
   const getLangDisplay = () => {
-    if (selectedLang === 'te') return 'తెలుగు';
-    if (selectedLang === 'hi') return 'हिंदी';
-    return 'English';
+    return currentLanguageOption.nativeName;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -128,16 +110,22 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
     let finalPrompt = input.trim();
     if (!finalPrompt && hasImage) {
-      if (selectedLang === 'te') {
+      if (currentLanguage === 'te') {
         finalPrompt = 'దయచేసి ఈ మొక్క/పంట ఆకు ఫోటోను పరిశీలించి తెగులు లేదా సమస్య నివారణ సలహా ఇవ్వండి.';
-      } else if (selectedLang === 'hi') {
+      } else if (currentLanguage === 'hi') {
         finalPrompt = 'कृपया इस पौधे/पत्ती की फोटो देखकर रोग या समस्या का समाधान बताएं।';
+      } else if (currentLanguage === 'kn') {
+        finalPrompt = 'ದಯವಿಟ್ಟು ಈ ಸಸ್ಯ/ಬೆಳೆ ಎಲೆಯ ಫೋಟೋ ಪರಿಶೀಲಿಸಿ ರೋಗ ಅಥವಾ ಸಮಸ್ಯೆಗೆ ಪರಿಹಾರ ತಿಳಿಸಿ.';
+      } else if (currentLanguage === 'ta') {
+        finalPrompt = 'தயவுசெய்து இந்த பயிர் இலை படத்தை ஆய்வு செய்து நோய் அல்லது பூச்சி தாக்குதலுக்கு தீர்வு கூறவும்.';
+      } else if (currentLanguage === 'mr') {
+        finalPrompt = 'कृपया या झाडाच्या/पानाच्या फोटोची तपासणी करून रोग किंवा समस्येवर उपाय सांगा.';
       } else {
         finalPrompt = 'Please analyze this crop/plant leaf image and diagnose any symptoms, pests, or disease problems.';
       }
     }
 
-    onSendMessage(finalPrompt, selectedLang, attachedImage || undefined);
+    onSendMessage(finalPrompt, currentLanguage, attachedImage || undefined);
     setInput('');
     setAttachedImage(null);
     if (textareaRef.current) {
@@ -385,7 +373,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:bg-emerald-600 hover:text-white transition flex items-center space-x-2.5"
                 >
                   <Camera className="w-4 h-4 text-emerald-400" />
-                  <span>Take Plant Photo</span>
+                  <span>{t('chat.take_photo', 'Take Plant Photo')}</span>
                 </button>
 
                 <button
@@ -397,7 +385,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:bg-emerald-600 hover:text-white transition flex items-center space-x-2.5"
                 >
                   <ImageIcon className="w-4 h-4 text-sky-400" />
-                  <span>Upload Image</span>
+                  <span>{t('chat.upload_photo', 'Upload Image')}</span>
                 </button>
               </div>
             )}
@@ -409,7 +397,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={`Ask KRISHI AI in ${getLangDisplay()}... or use + to attach crop photo`}
+            placeholder={t('chat.placeholder', `Ask KRISHI AI in ${getLangDisplay()}...`)}
             disabled={isLoading || isRecording || isProcessingVoice}
             className="
               w-full py-3.5 pl-4 pr-36 rounded-2xl bg-slate-800/90 border border-slate-700/80
@@ -419,15 +407,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           />
 
           <div className="absolute right-2.5 flex items-center space-x-1.5">
-            {/* Language Selector Toggle */}
+            {/* Language Selector Toggle - Synced with LanguageContext */}
             <button
               type="button"
-              onClick={cycleLanguage}
+              onClick={() => cycleNextLanguage()}
               title={`Switch language (Currently: ${getLangDisplay()} - click to change)`}
-              className="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-700 hover:bg-slate-600 text-amber-300 border border-slate-600 transition flex items-center space-x-1"
+              className="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-700 hover:bg-slate-600 text-amber-300 hover:text-amber-200 border border-slate-600 transition flex items-center space-x-1 shadow-sm active:scale-95 cursor-pointer"
             >
               <Globe className="w-3 h-3 text-amber-400" />
-              <span>{selectedLang === 'te' ? 'తెలుగు' : selectedLang === 'hi' ? 'हिंदी' : 'EN'}</span>
+              <span className="font-semibold">{currentLanguageOption.nativeName}</span>
             </button>
 
             {/* Microphone Button */}
@@ -479,14 +467,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         </form>
 
         <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 px-1">
-          <span>🌾 KRISHI AI Plant Health Advisor</span>
+          <span>🌾 {t('app.title', 'KRISHI AI')} {t('app.subtitle', 'Plant Health Advisor')}</span>
           <button
             type="button"
             onClick={isRecording ? stopRecording : startRecording}
             className="text-emerald-400 hover:text-emerald-300 font-medium flex items-center space-x-1"
           >
             <Mic className="w-3 h-3 inline" />
-            <span>🎤 Click to Speak ({getLangDisplay()})</span>
+            <span>🎤 {t('chat.voice_input', 'Click to Speak')} ({getLangDisplay()})</span>
           </button>
         </div>
       </div>

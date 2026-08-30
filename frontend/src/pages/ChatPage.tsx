@@ -10,6 +10,7 @@ import { conversationService } from '../services/conversationService';
 import { chatService } from '../services/chatService';
 import { Message, ConversationDetail } from '../types';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface OutletContextType {
   onOpenMobileSidebar: () => void;
@@ -22,6 +23,7 @@ export const ChatPage: React.FC = () => {
   const location = useLocation();
   const { onOpenMobileSidebar, refreshConversations } = useOutletContext<OutletContextType>();
   const { farmerProfile, user } = useAuth();
+  const { currentLanguage, t } = useLanguage();
 
   const [conversation, setConversation] = useState<ConversationDetail | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -87,6 +89,7 @@ export const ChatPage: React.FC = () => {
     setLastFailedPayload(null);
     setIsLoading(true);
 
+    const activeLanguage = responseLang || currentLanguage;
     const currentConvId = conversationId ? parseInt(conversationId, 10) : undefined;
     const tempUserMsgId = Date.now();
     const tempAiMsgId = Date.now() + 1;
@@ -97,7 +100,7 @@ export const ChatPage: React.FC = () => {
       conversation_id: currentConvId || 0,
       role: 'user',
       content: text,
-      language: responseLang,
+      language: activeLanguage,
       imageUrl: attachedImage,
       created_at: new Date().toISOString()
     };
@@ -107,7 +110,7 @@ export const ChatPage: React.FC = () => {
       conversation_id: currentConvId || 0,
       role: 'assistant',
       content: '',
-      language: responseLang,
+      language: activeLanguage,
       created_at: new Date().toISOString()
     };
 
@@ -129,7 +132,7 @@ export const ChatPage: React.FC = () => {
         {
           message: text,
           conversation_id: currentConvId,
-          response_language: responseLang,
+          response_language: activeLanguage,
           image_data: attachedImage,
           weather_data: clientWeatherData
         },
@@ -164,19 +167,18 @@ export const ChatPage: React.FC = () => {
             );
             setIsLoading(false);
 
-            if (!currentConvId && doneData.conversation_id) {
+            if (!conversationId && doneData.conversation_id) {
               await refreshConversations();
               navigate(`/chat/${doneData.conversation_id}`, { replace: true });
             } else {
               await refreshConversations();
             }
           },
-          onError: (streamErr) => {
-            console.error('Streaming message error:', streamErr);
+          onError: (err) => {
+            console.error('Streaming chat error:', err);
             setMessages((prev) => prev.filter((m) => m.id !== tempAiMsgId));
-            const detail = streamErr?.response?.data?.detail || streamErr?.message || 'KRISHI AI is temporarily unavailable. Please check backend connection.';
-            setErrorMessage(detail);
-            setLastFailedPayload({ text, lang: responseLang, image: attachedImage });
+            setErrorMessage(err || t('common.error', 'Failed to generate advisory response. Please retry.'));
+            setLastFailedPayload({ text, lang: activeLanguage, image: attachedImage });
             setIsLoading(false);
           }
         }
@@ -184,9 +186,9 @@ export const ChatPage: React.FC = () => {
     } catch (err: any) {
       console.error('Failed to send message:', err);
       setMessages((prev) => prev.filter((m) => m.id !== tempAiMsgId));
-      const detail = err.response?.data?.detail || 'KRISHI AI is temporarily unavailable. Please check backend connection.';
+      const detail = err.response?.data?.detail || t('common.error', 'KRISHI AI is temporarily unavailable. Please check backend connection.');
       setErrorMessage(detail);
-      setLastFailedPayload({ text, lang: responseLang, image: attachedImage });
+      setLastFailedPayload({ text, lang: activeLanguage, image: attachedImage });
       setIsLoading(false);
     }
   };
@@ -210,7 +212,7 @@ export const ChatPage: React.FC = () => {
         {isFetchingHistory ? (
           <div className="h-full flex items-center justify-center text-slate-400 space-x-2">
             <Loader2 className="w-5 h-5 animate-spin text-emerald-500" />
-            <span className="text-sm">Loading conversation...</span>
+            <span className="text-sm">{t('common.loading', 'Loading conversation...')}</span>
           </div>
         ) : messages.length === 0 ? (
           <div className="min-h-full flex flex-col items-center justify-center px-4 py-8 text-center max-w-3xl mx-auto">
@@ -220,10 +222,10 @@ export const ChatPage: React.FC = () => {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              Hello, {user?.name || 'Farmer'}! 👋
+              Hello, {user?.name || t('sidebar.profile', 'Farmer')}! 👋
             </h1>
             <p className="text-sm text-slate-400 mt-2 max-w-lg leading-relaxed">
-              What would you like to know about your farm today? KRISHI AI provides intelligent agricultural decision support for crop, soil, and irrigation management.
+              {t('profile.desc', 'What would you like to know about your farm today? KRISHI AI provides intelligent agricultural decision support for crop, soil, and irrigation management.')}
             </p>
 
             {/* KRISHI VISION – AI Farm Future Simulator Hero Feature Banner */}
@@ -233,18 +235,18 @@ export const ChatPage: React.FC = () => {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                      ★ NEW FEATURE
+                      ★ {t('header.rag', 'FEATURE')}
                     </span>
                     <span className="text-xs font-bold text-emerald-400">KRISHI VISION</span>
                   </div>
                   <h3 className="text-base sm:text-lg font-black text-white tracking-tight">
-                    AI Farm Future Simulator
+                    {t('sim.title', 'AI Farm Future Simulator')}
                   </h3>
                   <p className="text-xs text-slate-300 italic">
-                    &ldquo;Don&apos;t just grow. Simulate your future before you invest.&rdquo;
+                    &ldquo;{t('sim.subtitle', "Don't just grow. Simulate your future before you invest.")}&rdquo;
                   </p>
                   <p className="text-[11px] text-slate-400 max-w-md">
-                    Simulate rainfall delay, water shortage, temperature anomalies, and market price volatility in real time to find the most profitable, lowest-risk crop.
+                    {t('sim.desc', 'Simulate rainfall delay, water shortage, temperature anomalies, and market price volatility in real time to find the most profitable, lowest-risk crop.')}
                   </p>
                 </div>
 
@@ -254,7 +256,7 @@ export const ChatPage: React.FC = () => {
                   className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs shadow-lg shadow-emerald-900/50 flex items-center justify-center space-x-2 transition transform active:scale-95 shrink-0"
                 >
                   <span className="text-base">🌾</span>
-                  <span>Simulate My Farm</span>
+                  <span>{t('header.simulate', 'Simulate My Farm')}</span>
                   <Sparkles className="w-3.5 h-3.5 text-slate-950" />
                 </button>
               </div>
@@ -263,20 +265,20 @@ export const ChatPage: React.FC = () => {
             {/* Farmer Profile Context Summary Card */}
             {farmerProfile && (farmerProfile.primary_crop || farmerProfile.location) && (
               <div className="mt-4 p-3 rounded-2xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-300">
-                <span className="font-semibold text-emerald-400">Active Profile Context:</span>
+                <span className="font-semibold text-emerald-400">{t('header.context', 'Active Profile Context:')}</span>
                 {farmerProfile.primary_crop && (
                   <span className="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700">
-                    🌱 Crop: <strong>{farmerProfile.primary_crop}</strong>
+                    🌱 {t('profile.primary_crop', 'Crop')}: <strong>{farmerProfile.primary_crop}</strong>
                   </span>
                 )}
                 {farmerProfile.location && (
                   <span className="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700">
-                    📍 Location: <strong>{farmerProfile.location}</strong>
+                    📍 {t('profile.location', 'Location')}: <strong>{farmerProfile.location}</strong>
                   </span>
                 )}
                 {farmerProfile.current_crop_stage && (
                   <span className="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700">
-                    🌾 Stage: <strong>{farmerProfile.current_crop_stage}</strong>
+                    🌾 {t('profile.crop_stage', 'Stage')}: <strong>{farmerProfile.current_crop_stage}</strong>
                   </span>
                 )}
               </div>

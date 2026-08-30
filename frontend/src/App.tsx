@@ -8,6 +8,7 @@ import { ConversationsPage } from './pages/ConversationsPage';
 import { FarmerOnboardingForm } from './components/onboarding/FarmerOnboardingForm';
 import { Loader2 } from 'lucide-react';
 
+import { LanguageProvider } from './context/LanguageContext';
 import { SimulatorPage } from './pages/SimulatorPage';
 
 export const AppContent: React.FC = () => {
@@ -47,7 +48,9 @@ export function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
       </AuthProvider>
     </Router>
   );

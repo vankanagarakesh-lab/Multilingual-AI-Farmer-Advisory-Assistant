@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Menu, Sprout, MapPin, Layers, Wheat, BookOpen, Mic, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { WeatherWidget } from '../weather/WeatherWidget';
 import { FarmSimulatorModal } from '../simulator/FarmSimulatorModal';
+import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 
 interface ChatHeaderProps {
   title?: string;
@@ -11,6 +13,7 @@ interface ChatHeaderProps {
 
 export const ChatHeader: React.FC<ChatHeaderProps> = ({ title, onOpenMobileSidebar }) => {
   const { farmerProfile } = useAuth();
+  const { t, currentLanguageOption } = useLanguage();
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
 
   const hasContext = farmerProfile && (
@@ -35,7 +38,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ title, onOpenMobileSideb
           <div className="hidden xl:flex items-center space-x-2 truncate">
             <Sprout className="w-4 h-4 text-emerald-500 shrink-0" />
             <h2 className="text-xs font-semibold text-slate-300 truncate">
-              {title || 'KRISHI AI Multilingual Assistant'}
+              {title || `${t('app.title', 'KRISHI AI')} — ${t('app.subtitle', 'Intelligent Farm Advisor')}`}
             </h2>
           </div>
         </div>
@@ -47,25 +50,25 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ title, onOpenMobileSideb
             className="group relative inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-bold shadow-lg shadow-emerald-950/60 border border-emerald-400/30 transition duration-200 active:scale-95 animate-pulse hover:animate-none"
           >
             <span className="text-sm">🌾</span>
-            <span className="tracking-tight">Simulate My Farm</span>
+            <span className="tracking-tight">{t('header.simulate', 'Simulate My Farm')}</span>
             <Sparkles className="w-3.5 h-3.5 text-amber-300 group-hover:rotate-12 transition-transform" />
           </button>
 
-          {/* RAG & Multilingual Active Badges */}
+          {/* RAG & Active Language Badge */}
           <div className="hidden sm:flex items-center space-x-1.5 text-[11px] bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 px-2.5 py-1 rounded-full">
             <BookOpen className="w-3 h-3 text-emerald-400" />
-            <span className="font-semibold">RAG Knowledge</span>
+            <span className="font-semibold">{t('header.rag', 'RAG Knowledge')}</span>
             <span className="text-emerald-500">•</span>
             <Mic className="w-3 h-3 text-emerald-400" />
-            <span>Telugu / English Voice</span>
+            <span>{currentLanguageOption.nativeName} Voice</span>
           </div>
 
           {/* Active Context Indicators */}
           {hasContext && (
-            <div className="hidden lg:flex items-center space-x-2 text-xs bg-slate-800/80 border border-slate-700/60 text-slate-300 px-3 py-1 rounded-full">
+            <div className="hidden 2xl:flex items-center space-x-2 text-xs bg-slate-800/80 border border-slate-700/60 text-slate-300 px-3 py-1 rounded-full">
               <span className="text-emerald-400 font-medium flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Context:
+                {t('header.context', 'Context:')}
               </span>
               {farmerProfile.primary_crop && (
                 <span className="flex items-center gap-1 text-slate-300">
@@ -78,6 +81,9 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ title, onOpenMobileSideb
               )}
             </div>
           )}
+
+          {/* Top-Right Language Switcher */}
+          <LanguageSwitcher />
         </div>
       </header>
 

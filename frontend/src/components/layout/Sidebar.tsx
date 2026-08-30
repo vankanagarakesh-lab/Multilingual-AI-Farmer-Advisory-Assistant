@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Conversation } from '../../types';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -38,6 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { user, farmerProfile, logout } = useAuth();
+  const { t } = useLanguage();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -84,10 +86,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div>
                 <h1 className="font-bold text-lg text-white tracking-tight flex items-center gap-1.5">
-                  KRISHI AI
+                  {t('app.title', 'KRISHI AI')}
                   <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">v1.0</span>
                 </h1>
-                <p className="text-xs text-slate-400 font-medium">Intelligent Farm Advisor</p>
+                <p className="text-xs text-slate-400 font-medium">{t('app.subtitle', 'Intelligent Farm Advisor')}</p>
               </div>
             </div>
 
@@ -109,7 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-emerald-900/30 transition duration-150 active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
-              <span>New Conversation</span>
+              <span>{t('sidebar.new_chat', 'New Conversation')}</span>
             </button>
 
             <button
@@ -125,7 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               <div className="flex items-center space-x-2">
                 <span className="text-sm">🌾</span>
-                <span>Farm Simulator</span>
+                <span>{t('sidebar.simulator', 'Farm Simulator')}</span>
               </div>
               <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold">
                 VISION
@@ -137,13 +139,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Conversations History List */}
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
           <div className="px-3 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-            <span>Recent Conversations</span>
+            <span>{t('sidebar.recent_chats', 'Recent Conversations')}</span>
             <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
           </div>
 
           {conversations.length === 0 ? (
             <div className="p-4 text-center text-xs text-slate-500 italic">
-              No previous conversations. Ask KRISHI AI a question to get started!
+              {t('sidebar.no_chats', 'No previous conversations. Ask KRISHI AI a question to get started!')}
             </div>
           ) : (
             conversations.map((conv) => {
@@ -198,8 +200,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <AlertTriangle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-sm">Delete Conversation?</h3>
-                  <p className="text-xs text-slate-400">This action cannot be undone.</p>
+                  <h3 className="font-semibold text-white text-sm">{t('sidebar.confirm_delete', 'Delete Conversation?')}</h3>
+                  <p className="text-xs text-slate-400">{t('sidebar.desc_delete', 'This action cannot be undone.')}</p>
                 </div>
               </div>
 
@@ -210,7 +212,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => setDeletingId(null)}
                   className="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition"
                 >
-                  Cancel
+                  {t('sidebar.cancel', 'Cancel')}
                 </button>
                 <button
                   type="button"
@@ -221,12 +223,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   {isDeleting ? (
                     <>
                       <Loader2 className="w-3 h-3 animate-spin" />
-                      <span>Deleting...</span>
+                      <span>{t('common.loading', 'Deleting...')}</span>
                     </>
                   ) : (
                     <>
                       <Trash2 className="w-3 h-3" />
-                      <span>Delete</span>
+                      <span>{t('sidebar.delete', 'Delete')}</span>
                     </>
                   )}
                 </button>
@@ -255,9 +257,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <UserIcon className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <p className="text-xs font-semibold text-slate-200 truncate">{user?.name || 'Farmer Profile'}</p>
+                <p className="text-xs font-semibold text-slate-200 truncate">{user?.name || t('sidebar.profile', 'Farmer Profile')}</p>
                 <p className="text-[11px] text-emerald-400/80 truncate">
-                  {farmerProfile?.primary_crop ? `${farmerProfile.primary_crop} • ${farmerProfile?.farm_size || 'Farm'}` : 'View & Edit Profile'}
+                  {farmerProfile?.primary_crop ? `${farmerProfile.primary_crop} • ${farmerProfile?.farm_size || 'Farm'}` : t('sidebar.profile', 'View & Edit Profile')}
                 </p>
               </div>
             </div>

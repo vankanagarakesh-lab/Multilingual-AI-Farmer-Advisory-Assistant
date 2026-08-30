@@ -33,6 +33,8 @@ import {
   Minimize2
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import {
   SimulationInput,
   SimulationResponse,
@@ -56,6 +58,7 @@ export const FarmSimulatorModal: React.FC<FarmSimulatorModalProps> = ({
 }) => {
   const navigate = useNavigate();
   const { farmerProfile, user } = useAuth();
+  const { currentLanguage, t } = useLanguage();
 
   // Parse farm acres from profile or default to 2.0
   const defaultAcres = useMemo(() => {
@@ -128,7 +131,7 @@ export const FarmSimulatorModal: React.FC<FarmSimulatorModalProps> = ({
       current_crop: farmerProfile?.primary_crop || undefined,
       current_crop_stage: farmerProfile?.current_crop_stage || undefined,
       selected_crops: selectedCrops,
-      language: farmerProfile?.preferred_language || 'en',
+      language: currentLanguage,
     };
   }, [
     waterAvailability,
@@ -141,7 +144,8 @@ export const FarmSimulatorModal: React.FC<FarmSimulatorModalProps> = ({
     soilType,
     farmerProfile,
     cachedWeather,
-    selectedCrops
+    selectedCrops,
+    currentLanguage
   ]);
 
   // Instant 0ms reactive calculation on slider change
@@ -207,7 +211,7 @@ export const FarmSimulatorModal: React.FC<FarmSimulatorModalProps> = ({
         simulation_input: currentInput,
         simulation_results: simulation.results,
         best_crop_name: simulation.best_recommendation.crop_name,
-        language: farmerProfile?.preferred_language || 'en'
+        language: currentLanguage
       });
       setAiInsight(res);
       setActiveTab('strategy');
@@ -283,13 +287,15 @@ export const FarmSimulatorModal: React.FC<FarmSimulatorModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
+            <LanguageSwitcher />
+
             <button
               onClick={handleCopyReport}
               className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1.5 text-xs font-medium border border-slate-700"
               title="Copy Simulation Summary"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Export'}</span>
+              <span className="hidden sm:inline">{copied ? 'Copied!' : t('sim.export', 'Export')}</span>
             </button>
 
             {!isStandalonePage && (

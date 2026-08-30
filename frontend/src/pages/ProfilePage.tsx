@@ -15,7 +15,9 @@ import {
   Maximize2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage, normalizeLanguageCode, SupportedLanguage } from '../context/LanguageContext';
 import { farmerService } from '../services/farmerService';
+import { LanguageSwitcher } from '../components/layout/LanguageSwitcher';
 
 interface OutletContextType {
   onOpenMobileSidebar: () => void;
@@ -24,6 +26,7 @@ interface OutletContextType {
 export const ProfilePage: React.FC = () => {
   const { onOpenMobileSidebar } = useOutletContext<OutletContextType>();
   const { user, farmerProfile, farmerUuid, updateFarmerProfile, resetDeviceProfile } = useAuth();
+  const { currentLanguage, setLanguage, t } = useLanguage();
 
   const [name, setName] = useState('');
   const [age, setAge] = useState<string>('');
@@ -53,6 +56,12 @@ export const ProfilePage: React.FC = () => {
     }
   }, [farmerProfile, user]);
 
+  const handleLanguageChange = (langName: string) => {
+    setPreferredLanguage(langName);
+    const code = normalizeLanguageCode(langName);
+    setLanguage(code, true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -71,9 +80,12 @@ export const ProfilePage: React.FC = () => {
         current_crop_stage: currentCropStage,
       });
 
-      setSuccessMessage('Farmer profile updated successfully! KRISHI AI will now tailor recommendations using your updated farm context.');
+      const code = normalizeLanguageCode(preferredLanguage);
+      setLanguage(code, true);
+
+      setSuccessMessage(t('profile.success', 'Farmer profile updated successfully! KRISHI AI will now tailor recommendations using your updated farm context.'));
     } catch (err: any) {
-      setErrorMessage(err.response?.data?.detail || 'Failed to update farmer profile.');
+      setErrorMessage(err.response?.data?.detail || t('common.error', 'Failed to update farmer profile.'));
     } finally {
       setIsSaving(false);
     }
@@ -90,8 +102,9 @@ export const ProfilePage: React.FC = () => {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <h2 className="text-sm font-semibold text-slate-200">Farmer Agricultural Profile</h2>
+          <h2 className="text-sm font-semibold text-slate-200">{t('profile.title', 'Farmer Agricultural Profile')}</h2>
         </div>
+        <LanguageSwitcher />
       </header>
 
       {/* Main Profile Form */}
@@ -230,7 +243,7 @@ export const ProfilePage: React.FC = () => {
               </label>
               <select
                 value={preferredLanguage}
-                onChange={(e) => setPreferredLanguage(e.target.value)}
+                onChange={(e) => handleLanguageChange(e.target.value)}
                 className="w-full py-2.5 px-3.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition"
               >
                 <option value="Telugu">తెలుగు (Telugu)</option>
